@@ -1,163 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact — THYNK UNLIMITED</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-<style>
-  body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: #0a0a0a;
-    color: #ffffff;
-  }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact — THYNK UNLIMITED</title>
 
-  .page {
-    padding: 60px 20px;
-  }
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-  .container {
-    max-width: 1000px;
-    margin: auto;
-  }
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+    body{background:#050505;color:#fff;line-height:1.5;}
 
-  .contact-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin: 30px 0;
-  }
+    /* NAVBAR (same as index.html) */
+    nav{display:flex;justify-content:space-between;align-items:center;padding:20px 6%;background:#000;border-bottom:1px solid #0ff;}
+    nav h1 a{color:#0ff;text-decoration:none;font-weight:700;}
+    nav .nav-links a{color:#fff;margin-left:22px;text-decoration:none;transition:0.25s;}
+    nav .nav-links a:hover{color:#0ff;}
+    nav .nav-links a.active{color:#0ff;font-weight:700;}
 
-  .contact-card {
-    background: #111;
-    padding: 25px;
-    border-radius: 12px;
-    text-align: center;
-    border: 1px solid #00ffd5;
-  }
+    /* PAGE STYLES */
+    .page{padding:80px 6%;max-width:1200px;margin:auto;}
+    .container{max-width:1000px;margin:auto;}
+    h1{font-size:2.8rem;color:#0ff;margin-bottom:15px;text-align:center;}
+    p{text-align:center;opacity:0.9;max-width:700px;margin:auto;}
 
-  .contact-card a {
-    color: #00ffd5;
-    text-decoration: none;
-    font-weight: bold;
-  }
+    /* NEON GLOWING + SHIMMERING BORDERS */
+    .contact-card, .working-hours, .privacy-box {
+      background:#0a0a0a;
+      padding:25px;
+      border-radius:12px;
+      border:1px solid #00ffd5;
+      box-shadow: 
+        0 0 8px #00ffd5,
+        0 0 16px #00ffd5,
+        0 0 32px #0ff;
+      transition:all 0.4s;
+      animation: neon-shimmer 2.5s infinite alternate ease-in-out;
+    }
+    .contact-card:hover, .working-hours:hover, .privacy-box:hover {
+      transform:translateY(-6px);
+      box-shadow: 
+        0 0 15px #00ffd5,
+        0 0 30px #0ff,
+        0 0 50px #00ffd5,
+        0 0 70px #0ff;
+    }
+    @keyframes neon-shimmer {
+      0%   {box-shadow: 0 0 8px #00ffd5, 0 0 16px #00ffd5, 0 0 32px #0ff;}
+      50%  {box-shadow: 0 0 12px #0ff,   0 0 25px #0ff,   0 0 45px #00ffd5;}
+      100% {box-shadow: 0 0 8px #00ffd5, 0 0 16px #00ffd5, 0 0 32px #0ff;}
+    }
 
-  .working-hours {
-    margin: 40px 0;
-    padding: 25px;
-    background: #111;
-    border-radius: 12px;
-    border: 1px solid #00ffd5;
-  }
+    .contact-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:25px;
+      margin:40px 0;
+    }
 
-  .working-hours ul {
-    list-style: none;
-    padding: 0;
-    line-height: 2;
-  }
+    .contact-card h2 {color:#0ff;margin-bottom:10px;}
 
-  .contact-form {
-    margin-top: 40px;
-  }
+    .working-hours ul {list-style:none;padding:0;line-height:2.2;}
+    .working-hours li {margin:8px 0;}
 
-  .contact-form form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
+    /* TALLY FORM EMBED */
+    .contact-form {
+      margin-top:60px;
+      background:#0a0a0a;
+      padding:30px;
+      border-radius:12px;
+      border:1px solid #00ffd5;
+      animation: neon-shimmer 2.5s infinite alternate ease-in-out;
+    }
+    .contact-form h2 {
+      text-align:center;
+      color:#0ff;
+      margin-bottom:25px;
+    }
+    iframe {
+      width:100%;
+      border:none;
+      background:transparent;
+      border-radius:8px;
+    }
 
-  .contact-form input,
-  .contact-form textarea {
-    padding: 15px;
-    border-radius: 8px;
-    border: none;
-    background: #111;
-    color: white;
-  }
+    .privacy-box {
+      margin-top:50px;
+      padding:25px;
+      font-size:0.95rem;
+      border-left:5px solid #0ff;
+    }
 
-  .contact-form button {
-    padding: 15px;
-    border: none;
-    border-radius: 8px;
-    background: #00ffd5;
-    color: #000;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+    /* FOOTER (same as index) */
+    footer{text-align:center;padding:30px;border-top:1px solid #0ff;margin-top:60px;opacity:0.85;}
+    footer a{color:#0ff;text-decoration:none;}
 
-  .contact-form button:hover {
-    background: #00c2a8;
-  }
-
-  .privacy-box {
-    margin-top: 40px;
-    padding: 20px;
-    background: #111;
-    border-left: 4px solid #00ffd5;
-    border-radius: 10px;
-  }
-</style>
+    /* RESPONSIVE */
+    @media(max-width:768px){
+      .page{padding:60px 4%;}
+      h1{font-size:2.3rem;}
+      nav{padding:16px 4%;}
+    }
+    a:focus, button:focus {outline:3px solid rgba(0,255,255,0.3);outline-offset:4px;}
+  </style>
 </head>
 <body>
 
-<section id="contact" class="page">
-  <div class="container">
-    <h1>Contact THYNK UNLIMITED</h1>
-    <p>We are here to assist you with services, partnerships, and agent enrollment.</p>
+  <!-- NAV -->
+  <nav>
+    <h1><a href="index.html" aria-label="THYNK UNLIMITED home">THYNK UNLIMITED</a></h1>
+    <div class="nav-links" role="navigation" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="agents.html">Agents</a>
+      <a href="contact.html" class="active">Contact</a>
+      <a href="application.html">Apply</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </nav>
 
-    <div class="contact-grid">
-      <div class="contact-card">
-        <h2>WhatsApp</h2>
-        <p>
-          <a href="https://wa.me/260777083995" target="_blank">
-            +260 777 083 995
-          </a>
-        </p>
+  <!-- CONTACT PAGE -->
+  <section class="page" id="contact">
+    <div class="container">
+      <h1>Contact THYNK UNLIMITED</h1>
+      <p>We are here to assist you with services, partnerships, and agent enrollment.</p>
+
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h2>WhatsApp</h2>
+          <p><a href="https://wa.me/260777083995" target="_blank">+260 777 083 995</a></p>
+        </div>
+
+        <div class="contact-card">
+          <h2>Email</h2>
+          <p><a href="mailto:tresforzulu@gmail.com">tresforzulu@gmail.com</a></p>
+        </div>
       </div>
 
-      <div class="contact-card">
-        <h2>Email</h2>
-        <p>
-          <a href="mailto:tresforzulu@gmail.com">
-            tresforzulu@gmail.com
-          </a>
-        </p>
+      <div class="working-hours">
+        <h2>Working Hours</h2>
+        <ul>
+          <li>☑️ Monday – Friday: 08:00 – 22:00</li>
+          <li>☑️ Saturday: 08:00 – 15:00</li>
+          <li>☑️ Sunday: 15:00 – 21:00</li>
+        </ul>
       </div>
-    </div> <!-- end contact-grid -->
 
-    <div class="working-hours">
-      <h2>Working Hours</h2>
-      <ul>
-        <li>☑️ Monday – Friday: 08:00 – 22:00</li>
-        <li>☑️ Saturday: 08:00 – 15:00</li>
-        <li>☑️ Sunday: 15:00 – 21:00</li>
-      </ul>
+      <!-- WORKING TALLY FORM EMBED -->
+      <div class="contact-form">
+        <h2>Send Us a Message</h2>
+        <iframe 
+          src="https://tally.so/embed/jayJeY?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
+          width="100%" 
+          height="650" 
+          frameborder="0" 
+          marginheight="0" 
+          marginwidth="0" 
+          title="THYNK UNLIMITED Contact Form">
+        </iframe>
+      </div>
+
+      <div class="privacy-box">
+        <h3>Contact Privacy Notice</h3>
+        <p>Your personal information is protected. Any details submitted through this page will be used strictly for communication between you and THYNK UNLIMITED.</p>
+        <p>We do not sell, rent, or share your contact information with third parties. By reaching out to us, you consent to being contacted via WhatsApp or Email for support, service updates, or business-related communication only.</p>
+      </div>
     </div>
+  </section>
 
-    <div class="contact-form">
-      <h2>Send Us a Message</h2>
-      <form>
-        <input type="text" placeholder="Full Name" required>
-        <input type="email" placeholder="Email Address" required>
-        <textarea placeholder="Your Message" rows="5" required></textarea>
-        <button type="submit">Send Message</button>
-      </form>
-    </div>
-
-    <div class="privacy-box">
-      <h3>Contact Privacy Notice</h3>
-      <p>
-        Your personal information is protected. Any details submitted through this page will be used strictly for communication between you and THYNK UNLIMITED.
-      </p>
-      <p>
-        We do not sell, rent, or share your contact information with third parties. By reaching out to us, you consent to being contacted via WhatsApp or Email for support, service updates, or business-related communication only.
-      </p>
-    </div>
-
-  </div>
-</section>
+  <!-- FOOTER -->
+  <footer role="contentinfo">
+    <p>© 2026 THYNK UNLIMITED — All Rights Reserved</p>
+    <p><a href="terms.html">Terms of Service</a> · <a href="contact.html">Contact</a></p>
+  </footer>
 
 </body>
 </html>
