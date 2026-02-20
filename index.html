@@ -1,263 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>THYNK UNLIMITED</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>THYNK UNLIMITED</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-body{
-background:#050505;
-color:white;
-}
-
-/* NAVBAR */
-nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px 8%;
-background:#000;
-border-bottom:1px solid #0ff;
-}
-
-nav h1 a{
-color:#0ff;
-text-decoration:none;
-}
-
-nav a{
-color:white;
-margin-left:25px;
-text-decoration:none;
-transition:0.3s;
-}
-
-nav a:hover{
-color:#0ff;
-}
-
-/* HERO */
-.hero{
-height:90vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-background:radial-gradient(circle,#001a1a,#000);
-}
-
-.hero h2{
-font-size:3rem;
-color:#0ff;
-}
-
-.hero p{
-margin:15px 0;
-opacity:0.8;
-}
-
-.btn{
-padding:12px 30px;
-background:#0ff;
-color:#000;
-text-decoration:none;
-border-radius:30px;
-font-weight:bold;
-transition:0.3s;
-}
-
-.btn:hover{
-box-shadow:0 0 15px #0ff;
-}
-
-/* SECTIONS */
-section{
-padding:80px 8%;
-}
-
-.section-title{
-text-align:center;
-margin-bottom:40px;
-color:#0ff;
-}
-
-/* CARDS */
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-}
-
-.card{
-background:#0a0a0a;
-padding:25px;
-border:1px solid #0ff;
-border-radius:15px;
-transition:0.3s;
-cursor:pointer;
-}
-
-.card:hover{
-transform:translateY(-10px);
-box-shadow:0 0 20px #0ff;
-}
-
-/* CTA */
-.cta{
-text-align:center;
-background:#001a1a;
-}
-
-/* FOOTER */
-footer{
-text-align:center;
-padding:30px;
-border-top:1px solid #0ff;
-margin-top:40px;
-opacity:0.7;
-}
-
-footer a{
-color:#0ff;
-text-decoration:none;
-}
-
-@media(max-width:768px){
-.hero h2{
-font-size:2.2rem;
-}
-}
-</style>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+    body{background:#050505;color:#fff;line-height:1.5;}
+    /* NAVBAR */
+    nav{display:flex;justify-content:space-between;align-items:center;padding:20px 6%;background:#000;border-bottom:1px solid #0ff;}
+    nav h1 a{color:#0ff;text-decoration:none;font-weight:700;}
+    nav .nav-links a{color:#fff;margin-left:22px;text-decoration:none;transition:0.25s;}
+    nav .nav-links a:hover{color:#0ff;}
+    /* HERO */
+    .hero{height:90vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:radial-gradient(circle,#001a1a,#000);padding:0 20px;}
+    .hero h2{font-size:3rem;color:#0ff;letter-spacing:1px;}
+    .hero p{margin:15px 0;opacity:0.85;max-width:900px;}
+    .btn{display:inline-block;padding:12px 30px;background:#0ff;color:#000;text-decoration:none;border-radius:30px;font-weight:700;transition:0.25s;border:none;cursor:pointer;}
+    .btn:hover{box-shadow:0 0 18px #0ff;transform:translateY(-2px);}
+    /* SECTIONS */
+    section{padding:80px 6%;}
+    .section-title{text-align:center;margin-bottom:40px;color:#0ff;}
+    /* CARDS */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px;}
+    .card{background:#0a0a0a;padding:22px;border:1px solid #0ff;border-radius:12px;transition:0.25s;cursor:pointer;color:#fff;text-decoration:none;display:block;height:100%;}
+    .card:hover{transform:translateY(-8px);box-shadow:0 0 20px #0ff;}
+    .card h3{margin-bottom:8px;}
+    /* CTA */
+    .cta{text-align:center;background:#001a1a;padding:60px 6%;}
+    /* FOOTER */
+    footer{text-align:center;padding:30px;border-top:1px solid #0ff;margin-top:40px;opacity:0.85;}
+    footer a{color:#0ff;text-decoration:none;}
+    /* small screens */
+    @media(max-width:768px){.hero h2{font-size:2.2rem;} nav{padding:16px 4%;} section{padding:50px 4%;}}
+    /* accessible focus styles */
+    a:focus, button:focus {outline:3px solid rgba(0,255,255,0.25);outline-offset:3px;}
+  </style>
 </head>
-
 <body>
 
-<!-- NAV -->
-<nav>
-<h1><a href="index.html">THYNK UNLIMITED</a></h1>
-<div>
-<a href="index.html">Home</a>
-<a href="services.html">Services</a>
-<a href="agents.html">Agents</a>
-<a href="contact.html">Contact</a>
-<a href="application.html">Apply</a>
-<a href="terms.html">Terms</a>
-</div>
-</nav>
+  <!-- NAV -->
+  <nav>
+    <h1><a href="index.html" aria-label="THYNK UNLIMITED home">THYNK UNLIMITED</a></h1>
 
-<!-- HERO -->
-<div class="hero">
-<h2>THINK BEYOND LIMITS</h2>
-<p>Technology • Creativity • Digital Income • Innovation</p>
-<a href="application.html" class="btn">ENROLL NOW</a>
-</div>
+    <div class="nav-links" role="navigation" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="agents.html">Agents</a>
+      <a href="contact.html">Contact</a>
+      <a href="application.html">Apply</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </nav>
 
-<!-- ABOUT -->
-<section>
-<h2 class="section-title">WHO WE ARE</h2>
-<p style="text-align:center; max-width:800px; margin:auto;">
-THYNK UNLIMITED is a digital innovation hub focused on empowering creators,
-businesses and agents through technology, automation, advertising and
-income-generating digital services.
-</p>
-</section>
+  <!-- HERO -->
+  <header class="hero" role="banner" aria-labelledby="hero-title">
+    <h2 id="hero-title">THINK BEYOND LIMITS</h2>
+    <p>Technology • Creativity • Digital Income • Innovation</p>
+    <!-- Button element that navigates to application.html -->
+    <button class="btn" onclick="location.href='application.html'">ENROLL NOW</button>
+  </header>
 
-<!-- SERVICES -->
-<section>
-<h2 class="section-title">CORE SERVICES</h2>
+  <!-- ABOUT -->
+  <section aria-labelledby="about-title">
+    <h2 id="about-title" class="section-title">WHO WE ARE</h2>
+    <p style="text-align:center; max-width:900px; margin:auto;">
+      THYNK UNLIMITED is a digital innovation hub focused on empowering creators,
+      businesses and agents through technology, automation, advertising and
+      income-generating digital services.
+    </p>
+  </section>
 
-<div class="grid">
+  <!-- SERVICES -->
+  <section aria-labelledby="services-title">
+    <h2 id="services-title" class="section-title">CORE SERVICES</h2>
 
-<div class="card" onclick="location.href='services.html'">
-<h3>Premium Mod Apps</h3>
-<p>K100 – K150 fast delivery.</p>
-</div>
+    <div class="grid">
+      <a class="card" href="services.html" aria-label="Premium Mod Apps — view services">
+        <h3>Premium Mod Apps</h3>
+        <p>K100 – K150 fast delivery.</p>
+      </a>
 
-<div class="card" onclick="location.href='services.html'">
-<h3>Advertising</h3>
-<p>K150 per 24hr promotion.</p>
-</div>
+      <a class="card" href="services.html" aria-label="Advertising — view services">
+        <h3>Advertising</h3>
+        <p>K150 per 24hr promotion.</p>
+      </a>
 
-<div class="card" onclick="location.href='services.html'">
-<h3>Web Development</h3>
-<p>Business & personal websites.</p>
-</div>
+      <a class="card" href="services.html" aria-label="Web Development — view services">
+        <h3>Web Development</h3>
+        <p>Business & personal websites.</p>
+      </a>
 
-<div class="card" onclick="location.href='services.html'">
-<h3>AI Automation</h3>
-<p>Chatbots, content systems & workflows.</p>
-</div>
+      <a class="card" href="services.html" aria-label="AI Automation — view services">
+        <h3>AI Automation</h3>
+        <p>Chatbots, content systems & workflows.</p>
+      </a>
 
-<div class="card" onclick="location.href='services.html'">
-<h3>Branding</h3>
-<p>Logos, digital identity & creator setups.</p>
-</div>
+      <a class="card" href="services.html" aria-label="Branding — view services">
+        <h3>Branding</h3>
+        <p>Logos, digital identity & creator setups.</p>
+      </a>
 
-<div class="card" onclick="location.href='agents.html'">
-<h3>Agent Program</h3>
-<p>Earn 15% commission per sale.</p>
-</div>
+      <a class="card" href="agents.html" aria-label="Agent Program — learn about agent program">
+        <h3>Agent Program</h3>
+        <p>Earn 15% commission per sale.</p>
+      </a>
+    </div>
+  </section>
 
-</div>
-</section>
+  <!-- AGENT SYSTEM -->
+  <section aria-labelledby="agent-title">
+    <h2 id="agent-title" class="section-title">AGENT OPPORTUNITY</h2>
 
-<!-- AGENT SYSTEM -->
-<section>
-<h2 class="section-title">AGENT OPPORTUNITY</h2>
+    <div class="grid">
+      <a class="card" href="agents.html" aria-label="15% Commission — agents">
+        <h3>15% Commission</h3>
+        <p>Earn on every successful sale.</p>
+      </a>
 
-<div class="grid">
+      <a class="card" href="agents.html" aria-label="Remote Work — agents">
+        <h3>Remote Work</h3>
+        <p>Sell using your phone from anywhere.</p>
+      </a>
 
-<div class="card" onclick="location.href='agents.html'">
-<h3>15% Commission</h3>
-<p>Earn on every successful sale.</p>
-</div>
+      <a class="card" href="agents.html" aria-label="Daily Income — agents">
+        <h3>Daily Income</h3>
+        <p>Fast-moving digital products.</p>
+      </a>
+    </div>
+  </section>
 
-<div class="card" onclick="location.href='agents.html'">
-<h3>Remote Work</h3>
-<p>Sell using your phone from anywhere.</p>
-</div>
+  <!-- VISION -->
+  <section aria-labelledby="vision-title">
+    <h2 id="vision-title" class="section-title">OUR VISION</h2>
+    <p style="text-align:center; max-width:900px; margin:auto;">
+      To build Africa’s most powerful digital income and innovation ecosystem
+      where skills, creativity and technology create limitless opportunities.
+    </p>
+  </section>
 
-<div class="card" onclick="location.href='agents.html'">
-<h3>Daily Income</h3>
-<p>Fast-moving digital products.</p>
-</div>
+  <!-- CTA -->
+  <section class="cta" aria-labelledby="cta-title">
+    <h2 id="cta-title">READY TO START?</h2>
+    <p>Join the next generation of digital earners.</p>
+    <br>
+    <!-- anchor styled as button -->
+    <a class="btn" href="application.html" role="button" aria-label="Get started — apply now">GET STARTED</a>
+  </section>
 
-</div>
-</section>
-
-<!-- VISION -->
-<section>
-<h2 class="section-title">OUR VISION</h2>
-<p style="text-align:center; max-width:800px; margin:auto;">
-To build Africa’s most powerful digital income and innovation ecosystem
-where skills, creativity and technology create limitless opportunities.
-</p>
-</section>
-
-<!-- CTA -->
-<section class="cta">
-<h2>READY TO START?</h2>
-<p>Join the next generation of digital earners.</p>
-<br>
-<a href="application.html" class="btn">GET STARTED</a>
-</section>
-
-<!-- FOOTER -->
-<footer>
-<p>© 2026 THYNK UNLIMITED — All Rights Reserved</p>
-<p><a href="terms.html">Terms of Service</a></p>
-</footer>
+  <!-- FOOTER -->
+  <footer role="contentinfo">
+    <p>© 2026 THYNK UNLIMITED — All Rights Reserved</p>
+    <p><a href="terms.html">Terms of Service</a> · <a href="contact.html">Contact</a></p>
+  </footer>
 
 </body>
 </html>
