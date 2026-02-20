@@ -11,44 +11,30 @@
     *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
     body{background:#050505;color:#fff;line-height:1.5;}
 
-    /* NAVBAR (same as index.html) */
+    /* NAVBAR (matches index.html) */
     nav{display:flex;justify-content:space-between;align-items:center;padding:20px 6%;background:#000;border-bottom:1px solid #0ff;}
     nav h1 a{color:#0ff;text-decoration:none;font-weight:700;}
     nav .nav-links a{color:#fff;margin-left:22px;text-decoration:none;transition:0.25s;}
     nav .nav-links a:hover{color:#0ff;}
     nav .nav-links a.active{color:#0ff;font-weight:700;}
 
-    /* PAGE STYLES */
+    /* PAGE */
     .page{padding:80px 6%;max-width:1200px;margin:auto;}
     .container{max-width:1000px;margin:auto;}
     h1{font-size:2.8rem;color:#0ff;margin-bottom:15px;text-align:center;}
-    p{text-align:center;opacity:0.9;max-width:700px;margin:auto;}
+    p{text-align:center;opacity:0.9;max-width:700px;margin:auto;line-height:1.6;}
 
-    /* NEON GLOWING + SHIMMERING BORDERS */
-    .contact-card, .working-hours, .privacy-box {
+    /* CLEAN CARDS (no blinding glows) */
+    .contact-card, .working-hours, .privacy-box, .contact-form {
       background:#0a0a0a;
-      padding:25px;
+      padding:28px;
       border-radius:12px;
       border:1px solid #00ffd5;
-      box-shadow: 
-        0 0 8px #00ffd5,
-        0 0 16px #00ffd5,
-        0 0 32px #0ff;
-      transition:all 0.4s;
-      animation: neon-shimmer 2.5s infinite alternate ease-in-out;
+      margin-bottom:30px;
     }
-    .contact-card:hover, .working-hours:hover, .privacy-box:hover {
-      transform:translateY(-6px);
-      box-shadow: 
-        0 0 15px #00ffd5,
-        0 0 30px #0ff,
-        0 0 50px #00ffd5,
-        0 0 70px #0ff;
-    }
-    @keyframes neon-shimmer {
-      0%   {box-shadow: 0 0 8px #00ffd5, 0 0 16px #00ffd5, 0 0 32px #0ff;}
-      50%  {box-shadow: 0 0 12px #0ff,   0 0 25px #0ff,   0 0 45px #00ffd5;}
-      100% {box-shadow: 0 0 8px #00ffd5, 0 0 16px #00ffd5, 0 0 32px #0ff;}
+    .contact-card:hover, .working-hours:hover, .privacy-box:hover, .contact-form:hover {
+      transform:translateY(-4px);
+      border-color:#0ff;
     }
 
     .contact-grid {
@@ -57,21 +43,12 @@
       gap:25px;
       margin:40px 0;
     }
+    .contact-card h2 {color:#0ff;margin-bottom:12px;font-size:1.5rem;}
 
-    .contact-card h2 {color:#0ff;margin-bottom:10px;}
+    .working-hours ul {list-style:none;padding:0;line-height:2.3;}
+    .working-hours li {margin:10px 0;}
 
-    .working-hours ul {list-style:none;padding:0;line-height:2.2;}
-    .working-hours li {margin:8px 0;}
-
-    /* TALLY FORM EMBED */
-    .contact-form {
-      margin-top:60px;
-      background:#0a0a0a;
-      padding:30px;
-      border-radius:12px;
-      border:1px solid #00ffd5;
-      animation: neon-shimmer 2.5s infinite alternate ease-in-out;
-    }
+    /* TALLY FORM */
     .contact-form h2 {
       text-align:center;
       color:#0ff;
@@ -82,17 +59,33 @@
       border:none;
       background:transparent;
       border-radius:8px;
+      min-height:620px;
     }
 
-    .privacy-box {
-      margin-top:50px;
-      padding:25px;
-      font-size:0.95rem;
-      border-left:5px solid #0ff;
+    /* BACK TO HOME BUTTON */
+    .back-home {
+      text-align:center;
+      margin:50px 0 30px;
+    }
+    .btn {
+      display:inline-block;
+      padding:14px 32px;
+      background:#0ff;
+      color:#000;
+      text-decoration:none;
+      border-radius:30px;
+      font-weight:700;
+      transition:0.3s;
+      font-size:1.05rem;
+    }
+    .btn:hover {
+      background:#00e6cc;
+      transform:translateY(-3px);
+      box-shadow:0 0 15px #0ff;
     }
 
-    /* FOOTER (same as index) */
-    footer{text-align:center;padding:30px;border-top:1px solid #0ff;margin-top:60px;opacity:0.85;}
+    /* FOOTER */
+    footer{text-align:center;padding:40px 6%;border-top:1px solid #0ff;margin-top:60px;opacity:0.85;}
     footer a{color:#0ff;text-decoration:none;}
 
     /* RESPONSIVE */
@@ -100,6 +93,7 @@
       .page{padding:60px 4%;}
       h1{font-size:2.3rem;}
       nav{padding:16px 4%;}
+      .btn{padding:13px 28px;}
     }
     a:focus, button:focus {outline:3px solid rgba(0,255,255,0.3);outline-offset:4px;}
   </style>
@@ -146,7 +140,7 @@
         </ul>
       </div>
 
-      <!-- WORKING TALLY FORM EMBED -->
+      <!-- TALLY FORM (working embed) -->
       <div class="contact-form">
         <h2>Send Us a Message</h2>
         <iframe 
@@ -164,6 +158,11 @@
         <h3>Contact Privacy Notice</h3>
         <p>Your personal information is protected. Any details submitted through this page will be used strictly for communication between you and THYNK UNLIMITED.</p>
         <p>We do not sell, rent, or share your contact information with third parties. By reaching out to us, you consent to being contacted via WhatsApp or Email for support, service updates, or business-related communication only.</p>
+      </div>
+
+      <!-- NEW: BACK TO HOME BUTTON -->
+      <div class="back-home">
+        <a href="index.html" class="btn">← Back to Home</a>
       </div>
     </div>
   </section>
