@@ -24,19 +24,26 @@ color:white;
 nav{
 display:flex;
 justify-content:space-between;
+align-items:center;
 padding:20px 8%;
 background:#000;
 border-bottom:1px solid #0ff;
 }
 
-nav h1{
+nav h1 a{
 color:#0ff;
+text-decoration:none;
 }
 
 nav a{
 color:white;
-margin-left:20px;
+margin-left:25px;
 text-decoration:none;
+transition:0.3s;
+}
+
+nav a:hover{
+color:#0ff;
 }
 
 /* HERO */
@@ -67,6 +74,11 @@ color:#000;
 text-decoration:none;
 border-radius:30px;
 font-weight:bold;
+transition:0.3s;
+}
+
+.btn:hover{
+box-shadow:0 0 15px #0ff;
 }
 
 /* SECTIONS */
@@ -93,6 +105,7 @@ padding:25px;
 border:1px solid #0ff;
 border-radius:15px;
 transition:0.3s;
+cursor:pointer;
 }
 
 .card:hover{
@@ -115,6 +128,11 @@ margin-top:40px;
 opacity:0.7;
 }
 
+footer a{
+color:#0ff;
+text-decoration:none;
+}
+
 @media(max-width:768px){
 .hero h2{
 font-size:2.2rem;
@@ -127,12 +145,12 @@ font-size:2.2rem;
 
 <!-- NAV -->
 <nav>
-<h1>THYNK UNLIMITED</h1>
+<h1><a href="index.html">THYNK UNLIMITED</a></h1>
 <div>
-<a href="#">Home</a>
-<a href="#">Services</a>
-<a href="#">Agents</a>
-<a href="#">Contact</a>
+<a href="index.html">Home</a>
+<a href="services.html">Services</a>
+<a href="agents.html">Agents</a>
+<a href="contact.html">Contact</a>
 </div>
 </nav>
 
@@ -159,32 +177,32 @@ income-generating digital services.
 
 <div class="grid">
 
-<div class="card">
+<div class="card" onclick="location.href='services.html'">
 <h3>Premium Mod Apps</h3>
 <p>K100 – K150 fast delivery.</p>
 </div>
 
-<div class="card">
+<div class="card" onclick="location.href='services.html'">
 <h3>Advertising</h3>
 <p>K150 per 24hr promotion.</p>
 </div>
 
-<div class="card">
+<div class="card" onclick="location.href='services.html'">
 <h3>Web Development</h3>
 <p>Business & personal websites.</p>
 </div>
 
-<div class="card">
+<div class="card" onclick="location.href='services.html'">
 <h3>AI Automation</h3>
 <p>Chatbots, content systems & workflows.</p>
 </div>
 
-<div class="card">
+<div class="card" onclick="location.href='services.html'">
 <h3>Branding</h3>
 <p>Logos, digital identity & creator setups.</p>
 </div>
 
-<div class="card">
+<div class="card" onclick="location.href='agents.html'">
 <h3>Agent Program</h3>
 <p>Earn 15% commission per sale.</p>
 </div>
@@ -198,17 +216,17 @@ income-generating digital services.
 
 <div class="grid">
 
-<div class="card">
+<div class="card" onclick="location.href='agents.html'">
 <h3>15% Commission</h3>
 <p>Earn on every successful sale.</p>
 </div>
 
-<div class="card">
+<div class="card" onclick="location.href='agents.html'">
 <h3>Remote Work</h3>
 <p>Sell using your phone from anywhere.</p>
 </div>
 
-<div class="card">
+<div class="card" onclick="location.href='agents.html'">
 <h3>Daily Income</h3>
 <p>Fast-moving digital products.</p>
 </div>
@@ -236,6 +254,7 @@ where skills, creativity and technology create limitless opportunities.
 <!-- FOOTER -->
 <footer>
 <p>© 2026 THYNK UNLIMITED — All Rights Reserved</p>
+<p><a href="terms.html">Terms of Service</a></p>
 </footer>
 
 </body>
