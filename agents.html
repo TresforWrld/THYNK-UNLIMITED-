@@ -1,235 +1,365 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agents | THYNK UNLIMITED</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ANICADE TECH | Become an Agent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+        :root {
+            --primary: #0B1C2D;
+            --accent: #00BFFF;
+            --gold: #C6A85C;
+            --text: #F5F7FA;
+            --text-light: #94A3B8;
+            --success: #39ff14;
+            --border: rgba(255,255,255,0.07);
+            --card-bg: rgba(15, 30, 48, 0.88);
+            --input-bg: rgba(11, 28, 45, 0.8);
+        }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-body{background:#050505;color:white;}
+        body {
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
 
-nav{
-display:flex;
-justify-content:space-between;
-padding:20px 8%;
-background:#000;
-border-bottom:1px solid #0ff;
-}
+        /* ===== BACKGROUND RINGS ===== */
+        .rings-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; }
+        .ring-el { position: absolute; top: 50%; left: 50%; border: 1.5px solid transparent; border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%; will-change: transform; }
+        .ring-el:nth-child(1) { width: 860px; height: 860px; margin: -430px 0 0 -430px; border-color: rgba(0,191,255,0.09); animation: spin1 22s linear infinite; }
+        .ring-el:nth-child(2) { width: 620px; height: 620px; margin: -310px 0 0 -310px; border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%; border-color: rgba(198,168,92,0.07); animation: spin2 15s linear infinite; }
+        .ring-el:nth-child(3) { width: 420px; height: 420px; margin: -210px 0 0 -210px; border-color: rgba(0,191,255,0.05); animation: spin1 32s linear infinite reverse; }
 
-nav h1{color:#0ff;}
-nav a{color:white;margin-left:20px;text-decoration:none;}
+        @keyframes spin1 { to { transform: rotate(360deg); } }
+        @keyframes spin2 { to { transform: rotate(-360deg); } }
 
-section{padding:70px 8%;}
-.section-title{text-align:center;color:#0ff;margin-bottom:40px;}
+        /* ===== LAYOUT ===== */
+        .container { position: relative; z-index: 2; max-width: 680px; margin: 0 auto; padding: 36px 20px 60px; }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-}
+        /* ===== BACK LINK ===== */
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-light); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 36px; transition: color 0.2s; }
+        .back-link:hover { color: var(--accent); }
+        .back-link::before { content: '←'; font-size: 16px; }
 
-.card{
-background:#0a0a0a;
-padding:25px;
-border-radius:15px;
-border:1px solid #0ff;
-transition:0.3s;
-text-align:center;
-}
+        /* ===== HEADER ===== */
+        .page-header { text-align: center; margin-bottom: 36px; animation: fadeUp 0.8s ease both; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-.card:hover{
-transform:translateY(-10px);
-box-shadow:0 0 20px #0ff;
-}
+        .logo-ring-wrap { display: flex; justify-content: center; margin-bottom: 20px; }
+        .logo-ring { position: relative; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; }
+        .logo-ring::before { content: ''; position: absolute; inset: 0; border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%; border: 2px solid rgba(198,168,92,0.45); will-change: transform; animation: spin1 6s linear infinite; }
+        .logo-ring::after { content: ''; position: absolute; inset: 8px; border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%; border: 1.5px solid rgba(0,191,255,0.35); will-change: transform; animation: spin2 4s linear infinite; }
+        .logo-img { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; position: relative; z-index: 2; box-shadow: 0 0 26px rgba(198,168,92,0.3), 0 0 50px rgba(0,191,255,0.1); border: 2px solid rgba(198,168,92,0.35); }
 
-.highlight{
-color:#0ff;
-font-size:1.8rem;
-margin:15px 0;
-font-weight:bold;
-}
+        .page-eyebrow { font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; opacity: 0.8; }
+        .page-title { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 900; color: var(--gold); letter-spacing: 1px; text-shadow: 0 0 24px rgba(198,168,92,0.35); margin-bottom: 10px; }
+        .page-subtitle { font-size: 15px; color: var(--text-light); max-width: 500px; margin: 0 auto; }
 
-.btn{
-display:inline-block;
-margin-top:20px;
-padding:12px 30px;
-background:#0ff;
-color:#000;
-border-radius:30px;
-text-decoration:none;
-font-weight:bold;
-}
+        /* ===== PERKS ===== */
+        .perks { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; animation: fadeUp 0.8s ease 0.1s both; }
+        .perk { display: flex; align-items: center; gap: 7px; background: rgba(198,168,92,0.07); border: 1px solid rgba(198,168,92,0.2); border-radius: 30px; padding: 7px 16px; font-size: 13px; font-weight: 600; color: var(--gold); }
 
-.cta{
-text-align:center;
-background:#001a1a;
-}
+        /* ===== FORM CARD ===== */
+        .form-card { background: var(--card-bg); border: 1px solid rgba(198,168,92,0.18); border-radius: 16px; padding: 36px; animation: fadeUp 0.8s ease 0.15s both; }
 
-footer{
-text-align:center;
-padding:30px;
-border-top:1px solid #0ff;
-margin-top:40px;
-opacity:0.7;
-}
-</style>
+        .form-section-label { font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin: 28px 0 16px; display: flex; align-items: center; gap: 10px; }
+        .form-section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(0,191,255,0.2), transparent); }
+        .form-section-label:first-child { margin-top: 0; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+        .field.full { grid-column: span 2; }
+
+        label { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-light); }
+        label .req { color: var(--accent); margin-left: 2px; }
+
+        input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+            width: 100%; padding: 12px 16px; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 14px; font-family: 'Rajdhani', sans-serif; font-weight: 500; color: var(--text); outline: none; transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none;
+        }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,191,255,0.08); }
+        input::placeholder, textarea::placeholder { color: rgba(148,163,184,0.5); }
+        select option { background: #0B1C2D; }
+        textarea { resize: vertical; min-height: 100px; }
+
+        /* ===== FILE UPLOAD ===== */
+        .file-upload-area { border: 2px dashed rgba(198,168,92,0.25); border-radius: 10px; padding: 24px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; background: rgba(198,168,92,0.02); position: relative; }
+        .file-upload-area:hover, .file-upload-area.dragover { border-color: var(--gold); background: rgba(198,168,92,0.05); }
+        .file-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; padding: 0; border: none; background: transparent; box-shadow: none; }
+        .file-upload-area input[type="file"]:focus { box-shadow: none; border: none; }
+        .upload-icon { font-size: 28px; margin-bottom: 8px; }
+        .upload-text { font-size: 13px; font-weight: 600; color: var(--gold); margin-bottom: 4px; }
+        .upload-hint { font-size: 11px; color: var(--text-light); }
+        .file-list { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; }
+        .file-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,191,255,0.08); border: 1px solid rgba(0,191,255,0.2); border-radius: 20px; padding: 4px 12px; font-size: 12px; color: var(--accent); font-weight: 600; }
+        .file-tag .remove { cursor: pointer; opacity: 0.6; font-size: 14px; line-height: 1; }
+        .file-tag .remove:hover { opacity: 1; }
+
+        /* ===== CHECKBOX ===== */
+        .checkbox-field { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+        .checkbox-field input[type="checkbox"] { width: 18px; height: 18px; min-width: 18px; margin-top: 2px; accent-color: var(--accent); cursor: pointer; padding: 0; border: none; background: transparent; box-shadow: none; }
+        .checkbox-field input[type="checkbox"]:focus { box-shadow: none; }
+        .checkbox-field label { font-size: 13px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--text-light); cursor: pointer; line-height: 1.5; }
+        .checkbox-field label a { color: var(--accent); text-decoration: none; }
+        .checkbox-field label a:hover { text-decoration: underline; }
+
+        /* ===== SUBMIT ===== */
+        .submit-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, rgba(198,168,92,0.15), rgba(0,191,255,0.1)); border: 1px solid rgba(198,168,92,0.4); border-radius: 10px; font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); cursor: pointer; transition: all 0.25s; margin-top: 8px; }
+        .submit-btn:hover { background: linear-gradient(135deg, rgba(198,168,92,0.25), rgba(0,191,255,0.18)); border-color: var(--gold); box-shadow: 0 0 30px rgba(198,168,92,0.2); color: #fff; }
+
+        .mailto-note { margin-top: 14px; text-align: center; font-size: 12px; color: rgba(148,163,184,0.45); line-height: 1.5; }
+
+        /* ===== SUCCESS ===== */
+        .success-screen { display: none; text-align: center; padding: 50px 20px; animation: fadeUp 0.6s ease both; }
+        .success-screen.visible { display: block; }
+        .success-icon { font-size: 60px; margin-bottom: 20px; }
+        .success-screen h2 { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 700; color: var(--gold); margin-bottom: 12px; }
+        .success-screen p { color: var(--text-light); font-size: 15px; max-width: 400px; margin: 0 auto; }
+
+        /* ===== MOBILE ===== */
+        @media (max-width: 580px) {
+            .form-card { padding: 20px 14px; }
+            .form-row { grid-template-columns: 1fr; }
+            .field.full { grid-column: span 1; }
+            .page-title { font-size: 22px; }
+            .ring-el:nth-child(1) { width: 480px; height: 480px; margin: -240px 0 0 -240px; }
+            .ring-el:nth-child(2) { width: 360px; height: 360px; margin: -180px 0 0 -180px; }
+            .ring-el:nth-child(3) { width: 250px; height: 250px; margin: -125px 0 0 -125px; }
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- NAV -->
-<nav>
-<h1>THYNK UNLIMITED</h1>
-<div>
-<a href="index.html">Home</a>
-<a href="services.html">Services</a>
-<a href="agents.html">Agents</a>
-<a href="#">Contact</a>
-</div>
-</nav>
+    <div class="rings-bg">
+        <div class="ring-el"></div>
+        <div class="ring-el"></div>
+        <div class="ring-el"></div>
+    </div>
 
-<!-- HERO -->
-<section style="text-align:center;">
-<h2 class="section-title">BECOME AN AGENT</h2>
-<p>Start earning using your phone. No capital. No experience required.</p>
-<div class="highlight">15% COMMISSION ON EVERY SALE</div>
-<a href="https://tresforwrld.github.io/THYNK-UNLIMITED-/application.html" class="btn">JOIN NOW</a>
-</section>
+    <div class="container">
 
-<!-- WHY JOIN -->
-<section>
-<h2 class="section-title">WHY JOIN THYNK UNLIMITED?</h2>
+        <a href="index.html" class="back-link">Back to Main Site</a>
 
-<div class="grid">
+        <div class="page-header">
+            <div class="logo-ring-wrap">
+                <div class="logo-ring">
+                    <img src="https://i.imgur.com/RcBmjWM.png" alt="ANICADE TECH" class="logo-img">
+                </div>
+            </div>
+            <div class="page-eyebrow">Agent Programme &nbsp;·&nbsp; 2026</div>
+            <h1 class="page-title">Become an Agent</h1>
+            <p class="page-subtitle">Join the ANICADE TECH network. Sell our services and earn 15% commission on every closed deal — with bonus tiers for top performers.</p>
+        </div>
 
-<div class="card">
-<h3>Remote Work</h3>
-<p>Sell from anywhere using your smartphone.</p>
-</div>
+        <div class="perks">
+            <div class="perk">💰 15% Commission</div>
+            <div class="perk">🚀 +5% Bonus Tier</div>
+            <div class="perk">🆓 Free to Join</div>
+            <div class="perk">📲 WhatsApp Support</div>
+        </div>
 
-<div class="card">
-<h3>Daily Income</h3>
-<p>Fast payments on successful sales.</p>
-</div>
+        <div class="form-card" id="formCard">
+            <form id="agentForm">
 
-<div class="card">
-<h3>No Capital Needed</h3>
-<p>Start immediately without investment.</p>
-</div>
+                <div class="form-section-label">Personal Information</div>
+                <div class="form-row">
+                    <div class="field">
+                        <label>First Name <span class="req">*</span></label>
+                        <input type="text" id="firstName" placeholder="e.g. Mwila" required>
+                    </div>
+                    <div class="field">
+                        <label>Last Name <span class="req">*</span></label>
+                        <input type="text" id="lastName" placeholder="e.g. Banda" required>
+                    </div>
+                    <div class="field">
+                        <label>Email Address <span class="req">*</span></label>
+                        <input type="email" id="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="field">
+                        <label>Phone / WhatsApp <span class="req">*</span></label>
+                        <input type="tel" id="phone" placeholder="+260 7XX XXX XXX" required>
+                    </div>
+                    <div class="field full">
+                        <label>Location (City / Town) <span class="req">*</span></label>
+                        <input type="text" id="location" placeholder="e.g. Kabwe, Lusaka, Ndola..." required>
+                    </div>
+                </div>
 
-<div class="card">
-<h3>High Demand Services</h3>
-<p>Easy-to-sell digital products.</p>
-</div>
+                <div class="form-section-label">Agent Profile</div>
+                <div class="form-row">
+                    <div class="field">
+                        <label>Occupation</label>
+                        <input type="text" id="occupation" placeholder="e.g. Student, Sales Rep...">
+                    </div>
+                    <div class="field">
+                        <label>Experience in Sales</label>
+                        <select id="experience">
+                            <option value="" disabled selected>Select level</option>
+                            <option>No experience — willing to learn</option>
+                            <option>Some experience (under 1 year)</option>
+                            <option>1–3 years experience</option>
+                            <option>3+ years experience</option>
+                        </select>
+                    </div>
+                    <div class="field full">
+                        <label>Which services would you focus on selling?</label>
+                        <select id="focus">
+                            <option value="" disabled selected>Select a focus area</option>
+                            <option>Website & Digital Presence</option>
+                            <option>Advertising & Promotion</option>
+                            <option>Premium Digital Products</option>
+                            <option>Design & Branding</option>
+                            <option>AI & Automation</option>
+                            <option>All Services</option>
+                        </select>
+                    </div>
+                    <div class="field full">
+                        <label>Why do you want to become an ANICADE Agent?</label>
+                        <textarea id="motivation" placeholder="Tell us a little about yourself and why you want to join..."></textarea>
+                    </div>
+                </div>
 
-</div>
-</section>
+                <div class="form-section-label">Supporting Documents (Optional)</div>
+                <div class="field">
+                    <label>Upload CV, ID, or Any Supporting Files</label>
+                    <div class="file-upload-area" id="dropZone">
+                        <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                        <div class="upload-icon">📎</div>
+                        <div class="upload-text">Click to upload or drag & drop files here</div>
+                        <div class="upload-hint">PDF, DOC, DOCX, JPG, PNG &nbsp;·&nbsp; Max 10MB per file</div>
+                    </div>
+                    <div class="file-list" id="fileList"></div>
+                    <p style="font-size:11px;color:rgba(148,163,184,0.4);margin-top:8px;">Files will be listed in your email. Please attach them manually in your email app before sending.</p>
+                </div>
 
-<!-- COMMISSION -->
-<section>
-<h2 class="section-title">COMMISSION STRUCTURE</h2>
+                <div class="form-section-label">Confirmation</div>
+                <div class="checkbox-field">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">I have read and agree to the <a href="terms.html" target="_blank">Terms of Service</a> and <a href="terms.html#privacy" target="_blank">Privacy Policy</a>.</label>
+                </div>
+                <div class="checkbox-field">
+                    <input type="checkbox" id="confirm">
+                    <label for="confirm">I understand I will earn 15% commission per sale and that this is an independent agent role — not employment.</label>
+                </div>
 
-<div class="grid">
+                <button type="submit" class="submit-btn">Submit Application →</button>
+                <p class="mailto-note">Clicking submit will open your email app (Gmail, Outlook, etc.) pre-filled with your application. Just hit Send.</p>
 
-<div class="card">
-<h3>Mod Apps</h3>
-<p>K15 – K22.50 per sale</p>
-</div>
+            </form>
+        </div>
 
-<div class="card">
-<h3>Advertisements</h3>
-<p>K22.50 per ad</p>
-</div>
+        <div class="success-screen" id="successScreen">
+            <div class="success-icon">✅</div>
+            <h2>Application Ready!</h2>
+            <p>Your email app should have opened with your application pre-filled. Just hit <strong>Send</strong> and we'll be in touch via WhatsApp or email within 24–48 hours.</p>
+            <br>
+            <a href="index.html" style="color:var(--accent);font-size:14px;font-weight:600;text-decoration:none;">← Back to ANICADE TECH</a>
+        </div>
 
-<div class="card">
-<h3>Logo Design</h3>
-<p>K56.25 per sale</p>
-</div>
+    </div>
 
-<div class="card">
-<h3>Basic Website</h3>
-<p>K225 per sale</p>
-</div>
+    <script>
+        const fileInput  = document.getElementById('fileInput');
+        const fileList   = document.getElementById('fileList');
+        const dropZone   = document.getElementById('dropZone');
+        let selectedFiles = [];
 
-</div>
-</section>
+        fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+        dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        dropZone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
 
-<!-- INCOME EXAMPLES -->
-<section>
-<h2 class="section-title">MONTHLY INCOME EXAMPLES</h2>
+        function handleFiles(files) {
+            Array.from(files).forEach(f => {
+                if (!selectedFiles.find(x => x.name === f.name)) selectedFiles.push(f);
+            });
+            renderFileList();
+        }
 
-<div class="grid">
+        function renderFileList() {
+            fileList.innerHTML = '';
+            selectedFiles.forEach((f, i) => {
+                const tag = document.createElement('div');
+                tag.className = 'file-tag';
+                tag.innerHTML = `📄 ${f.name} <span class="remove" onclick="removeFile(${i})">✕</span>`;
+                fileList.appendChild(tag);
+            });
+        }
 
-<div class="card">
-<h3>Starter Agent</h3>
-<p>Part-time sales</p>
-<div class="highlight">K1,200+</div>
-</div>
+        function removeFile(i) {
+            selectedFiles.splice(i, 1);
+            renderFileList();
+        }
 
-<div class="card">
-<h3>Active Agent</h3>
-<p>Consistent daily sales</p>
-<div class="highlight">K2,700+</div>
-</div>
+        document.getElementById('agentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-<div class="card">
-<h3>Pro Agent</h3>
-<p>Serious sellers</p>
-<div class="highlight">K5,000+</div>
-</div>
+            const firstName  = document.getElementById('firstName').value.trim();
+            const lastName   = document.getElementById('lastName').value.trim();
+            const email      = document.getElementById('email').value.trim();
+            const phone      = document.getElementById('phone').value.trim();
+            const location   = document.getElementById('location').value.trim();
+            const occupation = document.getElementById('occupation').value.trim();
+            const experience = document.getElementById('experience').value;
+            const focus      = document.getElementById('focus').value;
+            const motivation = document.getElementById('motivation').value.trim();
+            const terms      = document.getElementById('terms').checked;
 
-<div class="card">
-<h3>Elite Agent</h3>
-<p>High performers</p>
-<div class="highlight">K8,000+</div>
-</div>
+            if (!terms) {
+                alert('Please agree to the Terms of Service before submitting.');
+                return;
+            }
 
-</div>
-</section>
+            const fileNames = selectedFiles.length
+                ? selectedFiles.map(f => f.name).join(', ')
+                : 'None attached';
 
-<!-- HOW IT WORKS -->
-<section>
-<h2 class="section-title">HOW IT WORKS</h2>
+            const subject = encodeURIComponent(`ANICADE Agent Application — ${firstName} ${lastName}`);
+            const body = encodeURIComponent(
+`ANICADE TECH — NEW AGENT APPLICATION
+======================================
 
-<div class="grid">
+PERSONAL DETAILS
+----------------
+Full Name:    ${firstName} ${lastName}
+Email:        ${email}
+Phone:        ${phone}
+Location:     ${location}
 
-<div class="card">
-<h3>1. Join</h3>
-<p>Register through the official enrollment link.</p>
-</div>
+AGENT PROFILE
+-------------
+Occupation:        ${occupation || 'Not provided'}
+Sales Experience:  ${experience || 'Not specified'}
+Focus Area:        ${focus || 'Not specified'}
 
-<div class="card">
-<h3>2. Promote</h3>
-<p>Post & market our services.</p>
-</div>
+MOTIVATION
+----------
+${motivation || 'Not provided'}
 
-<div class="card">
-<h3>3. Get Clients</h3>
-<p>Connect buyers to THYNK UNLIMITED.</p>
-</div>
+ATTACHED FILES
+--------------
+${fileNames}
 
-<div class="card">
-<h3>4. Get Paid</h3>
-<p>Earn 15% on every successful sale.</p>
-</div>
+======================================
+Submitted via ANICADE TECH Agent Portal`
+            );
 
-</div>
-</section>
+            window.location.href = `mailto:anicadetech@gmail.com?subject=${subject}&body=${body}`;
 
-<!-- CTA -->
-<section class="cta">
-<h2>YOUR DIGITAL INCOME STARTS HERE</h2>
-<p>Join the fastest growing digital opportunity.</p>
-<a href="https://tresforwrld.github.io/THYNK-UNLIMITED-/application.html" class="btn">APPLY</a>
-</section>
-
-<!-- FOOTER -->
-<footer>
-<p>© 2026 THYNK UNLIMITED — All Rights Reserved</p>
-</footer>
-
+            setTimeout(() => {
+                document.getElementById('formCard').style.display = 'none';
+                document.getElementById('successScreen').classList.add('visible');
+            }, 900);
+        });
+    </script>
 </body>
 </html>
