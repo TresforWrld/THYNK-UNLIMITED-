@@ -4,169 +4,540 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ANICADE TECH | Home</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ===== RESET & VARIABLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --navy: #0B1C2D;
+            --slate: #1F2E3D;
+            --gold: #C6A85C;
+            --electric: #00BFFF;
+            --white: #F5F7FA;
+            --gray: #94A3B8;
+            --orange: #ff8c00;
+            --red: #ff4d4d;
+            --green: lawngreen;
+        }
+
+        body {
+            background: var(--navy);
+            color: var(--white);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ===== ANIMATED RINGS BACKGROUND ===== */
+        .rings-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid transparent;
+            border-radius: 50%;
+            animation: rotate 8s linear infinite;
+            box-shadow: 0 0 30px currentColor;
+            transition: all 0.5s ease;
+        }
+
+        .ring1 {
+            width: 800px;
+            height: 800px;
+            border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+            animation: rotate 12s linear infinite, glowColors 10s ease infinite;
+        }
+
+        .ring2 {
+            width: 600px;
+            height: 600px;
+            border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%;
+            animation: rotate 8s linear infinite reverse, glowColors 10s ease infinite 2s;
+        }
+
+        .ring3 {
+            width: 400px;
+            height: 400px;
+            border-radius: 45% 55% 55% 45% / 45% 45% 55% 55%;
+            animation: rotate 15s linear infinite, glowColors 10s ease infinite 4s;
+        }
+
+        @keyframes rotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes glowColors {
+            0% { border-color: #ff8c00; box-shadow: 0 0 40px #ff8c00; }
+            20% { border-color: #94A3B8; box-shadow: 0 0 40px #94A3B8; }
+            40% { border-color: #ff4d4d; box-shadow: 0 0 40px #ff4d4d; }
+            60% { border-color: #00BFFF; box-shadow: 0 0 40px #00BFFF; }
+            80% { border-color: #C6A85C; box-shadow: 0 0 40px #C6A85C; }
+            100% { border-color: lawngreen; box-shadow: 0 0 40px lawngreen; }
+        }
+
+        .rings-background:hover .ring1 {
+            border-color: lawngreen;
+            filter: drop-shadow(0 0 40px lawngreen);
+        }
+        .rings-background:hover .ring2 {
+            border-color: red;
+            filter: drop-shadow(0 0 40px red);
+        }
+        .rings-background:hover .ring3 {
+            border-color: var(--gold);
+            filter: drop-shadow(0 0 40px var(--gold));
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .content {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ===== COLLAPSIBLE NAVIGATION ===== */
+        .glass-nav {
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            background: rgba(11, 28, 45, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 191, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--gold), var(--electric));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: logoPulse 3s ease infinite;
+        }
+
+        @keyframes logoPulse {
+            0% { filter: drop-shadow(0 0 5px var(--gold)); }
+            50% { filter: drop-shadow(0 0 20px var(--electric)); }
+            100% { filter: drop-shadow(0 0 5px var(--gold)); }
+        }
+
+        /* Hamburger Menu Icon - Hidden on Desktop */
+        .hamburger {
+            display: none;
+            font-size: 28px;
+            color: var(--white);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px 10px;
+            transition: 0.3s;
+        }
+        .hamburger:hover {
+            color: var(--electric);
+            text-shadow: 0 0 15px var(--electric);
+        }
+
+        /* Navigation Links Container */
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            transition: all 0.4s ease;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            background: var(--electric);
+            color: var(--navy);
+            box-shadow: 0 0 20px var(--electric);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a.active {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .login-nav-btn {
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold) !important;
+        }
+
+        .login-nav-btn:hover {
+            background: var(--gold) !important;
+            color: var(--navy) !important;
+            box-shadow: 0 0 20px var(--gold) !important;
+        }
+
+        /* ===== MOBILE RESPONSIVE STYLES ===== */
+        @media (max-width: 768px) {
+            .glass-nav {
+                padding: 15px 20px;
+                border-radius: 30px;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 80px;
+                left: 20px;
+                right: 20px;
+                background: rgba(11, 28, 45, 0.95);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                padding: 25px 15px;
+                border-radius: 25px;
+                border: 1px solid rgba(0, 191, 255, 0.3);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .nav-links a {
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+                font-size: 16px;
+            }
+
+            .ring1 { width: 500px; height: 500px; }
+            .ring2 { width: 400px; height: 400px; }
+            .ring3 { width: 300px; height: 300px; }
+        }
+
+        /* ===== REST OF YOUR STYLES (Hero, Cards, Footer - unchanged from before) ===== */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: rgba(31, 46, 61, 0.3);
+            backdrop-filter: blur(5px);
+            border-radius: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #C6A85C, #00BFFF, #ff4d4d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 3s infinite alternate;
+        }
+        .hero p {
+            font-size: 20px;
+            color: #94A3B8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .location-badge {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 25px;
+            background: rgba(0, 191, 255, 0.2);
+            border-radius: 50px;
+            color: #00BFFF;
+            border: 1px solid #00BFFF;
+            font-weight: bold;
+        }
+        .services-preview {
+            padding: 60px 20px;
+        }
+        .section-title {
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: var(--gold);
+            text-align: center;
+            animation: titleGlow 3s ease infinite;
+        }
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 10px var(--gold); }
+            50% { text-shadow: 0 0 25px var(--electric); }
+            100% { text-shadow: 0 0 10px var(--gold); }
+        }
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .preview-card {
+            background: rgba(31, 46, 61, 0.4);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 25px 15px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+        .preview-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--electric);
+            box-shadow: 0 0 30px rgba(0,191,255,0.3);
+        }
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        .featured-bundles {
+            padding: 60px 20px;
+        }
+        .bundles-preview {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .bundle-card {
+            background: linear-gradient(135deg, rgba(198,168,92,0.2), rgba(0,191,255,0.2));
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 350px;
+            border: 2px solid var(--gold);
+            position: relative;
+        }
+        .bundle-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--gold);
+            color: var(--navy);
+            padding: 5px 15px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .primary-btn {
+            background: linear-gradient(45deg, var(--electric), var(--gold));
+            color: var(--navy);
+        }
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px var(--electric);
+        }
+        footer {
+            margin-top: 60px;
+            background: rgba(8, 18, 29, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 30px 30px 0 0;
+            padding: 40px 40px 20px;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        .footer-section a {
+            color: var(--gray);
+            text-decoration: none;
+            display: block;
+            margin: 5px 0;
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--slate);
+            color: var(--gray);
+        }
+    </style>
 </head>
 <body>
-    <!-- ANIMATED RINGS BACKGROUND (SMOOTH LIKE LOGIN PAGE) -->
+    <!-- ANIMATED RINGS -->
     <div class="rings-background">
         <div class="ring ring1"></div>
         <div class="ring ring2"></div>
         <div class="ring ring3"></div>
     </div>
 
-    <!-- NAVIGATION -->
-    <nav class="glass-nav">
-        <div class="logo">⚡ ANICADE TECH</div>
-        <div class="nav-links">
-            <a href="index.html" class="active">Home</a>
-            <a href="website.html">Web</a>
-            <a href="advertising.html">Ads</a>
-            <a href="premium.html">Premium</a>
-            <a href="design.html">Design</a>
-            <a href="ai.html">AI</a>
-            <a href="agent.html">Agent</a>
-            <a href="bundles.html">Bundles</a>
-            <a href="contact.html">Contact</a>
-            <a href="login.html" class="login-nav-btn">Login</a>
-        </div>
-    </nav>
+    <!-- MAIN CONTENT -->
+    <div class="content">
+        <!-- NAVIGATION WITH HAMBURGER MENU -->
+        <nav class="glass-nav">
+            <div class="logo">⚡ ANICADE TECH</div>
+            
+            <!-- Hamburger Icon -->
+            <button class="hamburger" onclick="toggleMenu()">☰</button>
+            
+            <!-- Navigation Links -->
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" class="active">Home</a>
+                <a href="website.html">Web</a>
+                <a href="advertising.html">Ads</a>
+                <a href="premium.html">Premium</a>
+                <a href="design.html">Design</a>
+                <a href="ai.html">AI</a>
+                <a href="agent.html">Agent</a>
+                <a href="bundles.html">Bundles</a>
+                <a href="contact.html">Contact</a>
+                <!-- Login button linking to your specified URL -->
+                <a href="https://tresforwrld.github.io/ANICADEtech.net/#" class="login-nav-btn" target="_blank">Login</a>
+            </div>
+        </nav>
 
-    <!-- HERO SECTION -->
-    <section class="hero">
-        <h1 class="gradient-text">ZAMBIA'S DIGITAL INNOVATION HUB</h1>
-        <p class="hero-subtitle">World-class tech solutions at Zambian prices. Based in Kabwe, serving the nation.</p>
-        <div class="hero-buttons">
-            <a href="website.html" class="btn primary-btn">Explore Services</a>
-            <a href="contact.html" class="btn secondary-btn">Contact Us</a>
-        </div>
-        <div class="location-badge">
-            📍 Kabwe, Zambia | +260 777 083 995
-        </div>
-    </section>
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <h1>ZAMBIA'S DIGITAL INNOVATION HUB</h1>
+            <p>World-class tech solutions at Zambian prices. Based in Kabwe, serving the nation.</p>
+            <div class="location-badge">
+                📍 Kabwe, Zambia | +260 777 083 995
+            </div>
+        </section>
 
-    <!-- SERVICES PREVIEW -->
-    <section class="services-preview">
-        <h2 class="section-title">Our Services</h2>
-        <div class="preview-grid">
-            <a href="website.html" class="preview-card">
-                <div class="card-icon">🌐</div>
-                <h3>Website</h3>
-                <p>From K1,500</p>
-            </a>
-            <a href="advertising.html" class="preview-card">
-                <div class="card-icon">📢</div>
-                <h3>Advertising</h3>
-                <p>From K150</p>
-            </a>
-            <a href="premium.html" class="preview-card">
-                <div class="card-icon">📲</div>
-                <h3>Premium Apps</h3>
-                <p>From K100</p>
-            </a>
-            <a href="design.html" class="preview-card">
-                <div class="card-icon">🎨</div>
-                <h3>Design</h3>
-                <p>From K100</p>
-            </a>
-            <a href="ai.html" class="preview-card">
-                <div class="card-icon">🤖</div>
-                <h3>AI Services</h3>
-                <p>From K750</p>
-            </a>
-            <a href="agent.html" class="preview-card">
-                <div class="card-icon">🧠</div>
-                <h3>Become an Agent</h3>
-                <p>15% Commission</p>
-            </a>
-        </div>
-    </section>
+        <!-- SERVICES PREVIEW -->
+        <section class="services-preview">
+            <h2 class="section-title">Our Services</h2>
+            <div class="preview-grid">
+                <a href="website.html" class="preview-card"><div class="card-icon">🌐</div><h3>Website</h3><p>From K1,500</p></a>
+                <a href="advertising.html" class="preview-card"><div class="card-icon">📢</div><h3>Advertising</h3><p>From K150</p></a>
+                <a href="premium.html" class="preview-card"><div class="card-icon">📲</div><h3>Premium Apps</h3><p>From K100</p></a>
+                <a href="design.html" class="preview-card"><div class="card-icon">🎨</div><h3>Design</h3><p>From K100</p></a>
+                <a href="ai.html" class="preview-card"><div class="card-icon">🤖</div><h3>AI Services</h3><p>From K750</p></a>
+                <a href="agent.html" class="preview-card"><div class="card-icon">🧠</div><h3>Become an Agent</h3><p>15% Commission</p></a>
+            </div>
+        </section>
 
-    <!-- FEATURED BUNDLES -->
-    <section class="featured-bundles">
-        <h2 class="section-title">Popular Bundles</h2>
-        <div class="bundles-preview">
-            <div class="bundle-card">
-                <span class="bundle-tag">🔥 SAVE K50</span>
-                <h3>Starter Web + Ads</h3>
-                <p>Basic Website + 24hr Advertising</p>
-                <div class="bundle-price">K1,600</div>
-                <a href="bundles.html" class="btn small-btn">View Bundle</a>
-            </div>
-            <div class="bundle-card">
-                <span class="bundle-tag">🔥 SAVE K175</span>
-                <h3>Creator Starter Pack</h3>
-                <p>5 Designs + Logo + Premium App</p>
-                <div class="bundle-price">K800</div>
-                <a href="bundles.html" class="btn small-btn">View Bundle</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- WHY CHOOSE US -->
-    <section class="why-us">
-        <h2 class="section-title">Why Choose ANICADE?</h2>
-        <div class="features-grid">
-            <div class="feature">
-                <div class="feature-icon">🇿🇲</div>
-                <h3>Zambian Based</h3>
-                <p>Proudly operating from Kabwe</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">💰</div>
-                <h3>Local Prices</h3>
-                <p>Fair pricing in Kwacha</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">⚡</div>
-                <h3>Fast Delivery</h3>
-                <p>Quick turnaround times</p>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🛡️</div>
-                <h3>Quality Guaranteed</h3>
-                <p>Satisfaction guaranteed</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA SECTION -->
-    <section class="cta-section">
-        <h2>Ready to start your project?</h2>
-        <p>Get in touch with us today</p>
-        <a href="contact.html" class="btn primary-btn large">Contact Us Now</a>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>ANICADE TECH</h4>
-                <p>📍 Kabwe, Zambia</p>
-                <p>📱 +260 777 083 995</p>
-                <p>📧 anicadetech@gmail.com</p>
-            </div>
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <a href="website.html">Web Services</a>
-                <a href="advertising.html">Advertising</a>
-                <a href="premium.html">Premium Apps</a>
-                <a href="agent.html">Become an Agent</a>
-            </div>
-            <div class="footer-section">
-                <h4>Follow Us</h4>
-                <div class="social-links">
-                    <a href="#">📘 Facebook</a>
-                    <a href="#">📷 Instagram</a>
-                    <a href="#">🐦 Twitter</a>
-                    <a href="https://wa.me/message/D3GSC6P7RORZD1">📱 WhatsApp</a>
+        <!-- BUNDLES PREVIEW -->
+        <section class="featured-bundles">
+            <h2 class="section-title">Popular Bundles</h2>
+            <div class="bundles-preview">
+                <div class="bundle-card">
+                    <span class="bundle-tag">🔥 SAVE K50</span>
+                    <h3>Starter Web + Ads</h3>
+                    <p>Basic Website + 24hr Advertising</p>
+                    <div style="font-size: 32px; color: lawngreen; margin: 15px 0;">K1,600</div>
+                    <a href="bundles.html" class="btn primary-btn">View Bundle</a>
+                </div>
+                <div class="bundle-card">
+                    <span class="bundle-tag">🔥 SAVE K175</span>
+                    <h3>Creator Starter Pack</h3>
+                    <p>5 Designs + Logo + Premium App</p>
+                    <div style="font-size: 32px; color: lawngreen; margin: 15px 0;">K800</div>
+                    <a href="bundles.html" class="btn primary-btn">View Bundle</a>
                 </div>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2026 ANICADE TECH. All rights reserved.</p>
-        </div>
-    </footer>
+        </section>
 
-    <script src="auth-check.js"></script>
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>ANICADE TECH</h4>
+                    <p>📍 Kabwe, Zambia</p>
+                    <p>📱 +260 777 083 995</p>
+                    <p>📧 anicadetech@gmail.com</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="website.html">Web Services</a>
+                    <a href="advertising.html">Advertising</a>
+                    <a href="premium.html">Premium Apps</a>
+                    <a href="agent.html">Become an Agent</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <a href="#">📘 Facebook</a>
+                    <a href="#">📷 Instagram</a>
+                    <a href="#">📱 WhatsApp</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 ANICADE TECH ZAMBIA. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript for Collapsible Menu -->
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('show');
+            
+            // Optional: Change hamburger icon based on state
+            const hamburger = document.querySelector('.hamburger');
+            if (navLinks.classList.contains('show')) {
+                hamburger.textContent = '✕'; // Close icon
+            } else {
+                hamburger.textContent = '☰'; // Hamburger icon
+            }
+        }
+
+        // Close menu when a link is clicked (for better UX)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                const navLinks = document.getElementById('navLinks');
+                navLinks.classList.remove('show');
+                document.querySelector('.hamburger').textContent = '☰';
+            });
+        });
+
+        // Close menu when clicking outside (optional enhancement)
+        window.addEventListener('click', function(e) {
+            const nav = document.querySelector('.glass-nav');
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.querySelector('.hamburger');
+            
+            if (!nav.contains(e.target) && navLinks.classList.contains('show')) {
+                navLinks.classList.remove('show');
+                hamburger.textContent = '☰';
+            }
+        });
+    </script>
 </body>
 </html>
