@@ -2,15 +2,25 @@
   "name": "ANICADE TECH",
   "short_name": "ANICADE",
   "description": "Professional Tech Solutions — Web, Ads, AI, Design & More",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/ANICADEtech.net-in/",
+  "scope": "/ANICADEtech.net-in/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#0B1C2D",
   "theme_color": "#0B1C2D",
   "icons": [
-    { "src": "https://i.imgur.com/9mjKZAj.jpeg", "sizes": "192x192", "type": "image/jpeg", "purpose": "any" },
-    { "src": "https://i.imgur.com/9mjKZAj.jpeg", "sizes": "512x512", "type": "image/jpeg", "purpose": "any maskable" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ],
   "categories": ["business", "productivity"]
 }
