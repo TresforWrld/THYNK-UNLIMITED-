@@ -671,12 +671,31 @@ _loadLikes();
 </script>
 
 <style>
-#pwa-overlay{position:fixed;inset:0;z-index:99999;background:rgba(5,12,22,0.93);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s ease}
-#pwa-overlay.show{opacity:1;pointer-events:all}
+/* ── TOP BANNER (on reload, not installed) ── */
+#pwa-banner{
+  position:fixed;top:0;left:0;right:0;z-index:99998;
+  background:rgba(9,22,36,0.97);
+  border-bottom:1px solid rgba(0,191,255,0.18);
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  transform:translateY(-100%);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+#pwa-banner.show{transform:translateY(0)}
+.pwa-ban-icon{width:32px;height:32px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(0,191,255,0.3);flex-shrink:0}
+.pwa-ban-text{flex:1;min-width:0}
+.pwa-ban-title{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;color:#F5F7FA;letter-spacing:.5px;white-space:nowrap}
+.pwa-ban-sub{font-family:'Rajdhani',sans-serif;font-size:11px;color:#94A3B8;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pwa-ban-btn{background:linear-gradient(135deg,#00BFFF,#0077aa);color:#0B1C2D;border:none;border-radius:20px;padding:7px 14px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.pwa-ban-close{background:none;border:none;color:rgba(148,163,184,0.4);font-size:16px;cursor:pointer;padding:2px 4px;flex-shrink:0;line-height:1}
+
+/* ── FULL SCREEN (post-login only) ── */
+#pwa-overlay{position:fixed;inset:0;z-index:99999;background:rgba(5,12,22,0.93);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s ease;display:none}
+#pwa-overlay.show{opacity:1;pointer-events:all;display:flex}
 .pwa-box{background:#0B1C2D;border:1px solid rgba(198,168,92,0.22);border-radius:20px;padding:28px 22px 20px;max-width:300px;width:100%;text-align:center;transform:translateY(18px);transition:transform .3s ease}
 #pwa-overlay.show .pwa-box{transform:translateY(0)}
 .pwa-logo{width:70px;height:70px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,191,255,0.35);box-shadow:0 0 22px rgba(0,191,255,0.28);margin:0 auto 12px;display:block}
-.pwa-ver-badge{display:inline-block;background:rgba(0,191,255,0.07);border:1px solid rgba(0,191,255,0.16);border-radius:20px;padding:3px 10px;font-family:'Orbitron',sans-serif;font-size:9px;color:#00BFFF;letter-spacing:1.5px;margin-bottom:11px}
+.pwa-ver{display:inline-block;background:rgba(0,191,255,0.07);border:1px solid rgba(0,191,255,0.16);border-radius:20px;padding:3px 10px;font-family:'Orbitron',sans-serif;font-size:9px;color:#00BFFF;letter-spacing:1.5px;margin-bottom:11px}
 .pwa-title{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:900;color:#C6A85C;letter-spacing:1px;margin-bottom:3px}
 .pwa-sub{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:rgba(0,191,255,0.6);text-transform:uppercase;margin-bottom:13px}
 .pwa-desc{font-family:'Rajdhani',sans-serif;font-size:13px;color:#94A3B8;line-height:1.55;margin-bottom:8px}
@@ -689,22 +708,34 @@ _loadLikes();
 .pwa-btn-skip{width:100%;background:none;border:1px solid rgba(255,255,255,0.06);color:rgba(148,163,184,0.4);padding:10px;border-radius:40px;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:.5px}
 </style>
 
+<!-- TOP BANNER -->
+<div id="pwa-banner">
+  <img class="pwa-ban-icon" src="https://i.imgur.com/9mjKZAj.jpeg" alt="A">
+  <div class="pwa-ban-text">
+    <div class="pwa-ban-title">ANICADE TECH</div>
+    <div class="pwa-ban-sub">Download the app for the full experience</div>
+  </div>
+  <button class="pwa-ban-btn" onclick="bannerInstall()">GET APP</button>
+  <button class="pwa-ban-close" onclick="bannerClose()">&#10005;</button>
+</div>
+
+<!-- FULL OVERLAY (post-login / update) -->
 <div id="pwa-overlay">
   <div class="pwa-box">
     <img class="pwa-logo" src="https://i.imgur.com/9mjKZAj.jpeg" alt="ANICADE">
-    <div class="pwa-ver-badge" id="pwa-badge">TW.1.0.0</div>
+    <div class="pwa-ver" id="pwa-badge">TW.1.0.0</div>
     <div class="pwa-title">ANICADE TECH</div>
     <div class="pwa-sub" id="pwa-sub">Install App</div>
     <div class="pwa-desc">
       <strong id="pwa-heading">Get the App</strong>
-      <span id="pwa-body">Add ANICADE TECH to your home screen for instant access to all services, the Agent Portal and more.</span>
+      <span id="pwa-body">Download the ANICADE TECH app for instant access to all services, the Agent Portal and more.</span>
     </div>
     <div class="pwa-pills" id="pwa-pills">
       <span class="pwa-pill">31 Services</span>
       <span class="pwa-pill">Agent Portal</span>
       <span class="pwa-pill">Offline Ready</span>
     </div>
-    <button id="pwa-main-btn" class="pwa-btn-primary pwa-install-style" onclick="pwaAction()">INSTALL APP</button>
+    <button id="pwa-main-btn" class="pwa-btn-primary pwa-install-style" onclick="pwaAction()">DOWNLOAD APP</button>
     <button class="pwa-btn-skip" onclick="pwaSkip()">Maybe later</button>
   </div>
 </div>
@@ -717,38 +748,70 @@ _loadLikes();
   var _updateMode = false;
 
   window.addEventListener('beforeinstallprompt', function(e){
-    e.preventDefault(); _dp = e;
+    e.preventDefault();
+    _dp = e;
   });
 
-  function isStandalone(){
+  function isInstalled(){
     return window.matchMedia('(display-mode: standalone)').matches ||
            navigator.standalone === true;
   }
 
+  /* ── BANNER (top strip, on every reload when not installed) ── */
+  function showBanner(){
+    var b = document.getElementById('pwa-banner');
+    b.style.display = 'flex';
+    setTimeout(function(){ b.classList.add('show'); }, 30);
+  }
+  function hideBanner(){
+    var b = document.getElementById('pwa-banner');
+    b.classList.remove('show');
+    setTimeout(function(){ b.style.display = 'none'; }, 360);
+  }
+
+  window.bannerClose = function(){ hideBanner(); };
+
+  window.bannerInstall = function(){
+    if(_dp){
+      _dp.prompt();
+      _dp.userChoice.then(function(c){
+        _dp = null;
+        hideBanner();
+      });
+    } else {
+      // No native prompt yet — show full overlay with instructions
+      showOverlay();
+      hideBanner();
+    }
+  };
+
+  /* ── FULL OVERLAY (post-login trigger + update) ── */
   function showOverlay(){
     var ov = document.getElementById('pwa-overlay');
     ov.style.display = 'flex';
     setTimeout(function(){ ov.classList.add('show'); }, 30);
   }
-
   function hideOverlay(){
     var ov = document.getElementById('pwa-overlay');
     ov.classList.remove('show');
     setTimeout(function(){ ov.style.display = 'none'; }, 320);
   }
 
+  // Exposed so login.html redirect can trigger it via sessionStorage flag
+  window.__showPwaOverlay = showOverlay;
+
   function setUpdateMode(){
     _updateMode = true;
     var badge = document.getElementById('pwa-badge');
     badge.textContent = 'UPDATE AVAILABLE';
-    badge.style.cssText = 'background:rgba(198,168,92,0.08);border:1px solid rgba(198,168,92,0.22);color:#C6A85C;border-radius:20px;padding:3px 10px;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.5px;display:inline-block;margin-bottom:11px';
+    badge.style.cssText = 'display:inline-block;background:rgba(198,168,92,0.08);border:1px solid rgba(198,168,92,0.22);color:#C6A85C;border-radius:20px;padding:3px 10px;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.5px;margin-bottom:11px';
     document.getElementById('pwa-sub').textContent = 'New Version Ready';
     document.getElementById('pwa-heading').textContent = APP_VER + ' is here';
     document.getElementById('pwa-body').textContent = 'A new version of ANICADE TECH is available. Reload now to get the latest features and improvements.';
     document.getElementById('pwa-pills').innerHTML =
       '<span class="pwa-pill">New Features</span>' +
       '<span class="pwa-pill">Bug Fixes</span>' +
-      '<span class="pwa-pill">Faster</span>';
+      '<span class="pwa-pill">Improvements</span>';
     var btn = document.getElementById('pwa-main-btn');
     btn.textContent = 'UPDATE NOW';
     btn.className = 'pwa-btn-primary pwa-update-style';
@@ -768,9 +831,8 @@ _loadLikes();
       _dp.prompt();
       _dp.userChoice.then(function(){ _dp = null; hideOverlay(); });
     } else {
-      // iOS fallback
       document.getElementById('pwa-body').textContent =
-        'Tap the Share button in your browser, then "Add to Home Screen".';
+        'On Android: tap the menu (⋮) in Chrome and select "Install app" or "Add to Home Screen". On iOS: tap Share then "Add to Home Screen".';
       document.getElementById('pwa-main-btn').textContent = 'GOT IT';
       _dp = null;
     }
@@ -780,8 +842,9 @@ _loadLikes();
 
   window.addEventListener('load', function(){
     var stored = localStorage.getItem(VER_KEY);
-    if(isStandalone()){
-      // Installed — only show if version changed (update prompt)
+
+    if(isInstalled()){
+      // Already installed as app — only show update prompt if version changed
       if(stored && stored !== APP_VER){
         localStorage.setItem(VER_KEY, APP_VER);
         setUpdateMode();
@@ -790,8 +853,14 @@ _loadLikes();
         localStorage.setItem(VER_KEY, APP_VER);
       }
     } else {
-      // Not installed — show install prompt every single load
-      setTimeout(showOverlay, 1000);
+      // Not installed — show slim top banner on every reload
+      setTimeout(showBanner, 1000);
+
+      // Also show full overlay if coming from login (flag set by login.html)
+      if(sessionStorage.getItem('pwa_show_overlay') === '1'){
+        sessionStorage.removeItem('pwa_show_overlay');
+        setTimeout(showOverlay, 600);
+      }
     }
   });
 
@@ -802,7 +871,8 @@ _loadLikes();
         var sw = reg.installing;
         sw.addEventListener('statechange', function(){
           if(sw.state === 'installed' && navigator.serviceWorker.controller){
-            setUpdateMode(); showOverlay();
+            setUpdateMode();
+            showOverlay();
           }
         });
       });
@@ -810,5 +880,6 @@ _loadLikes();
   }
 })();
 </script>
+
 </body>
 </html>
