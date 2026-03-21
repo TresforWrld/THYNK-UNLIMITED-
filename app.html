@@ -24,7 +24,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 #splash{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
 #splash.hide{animation:splashOut .5s ease forwards}
 @keyframes splashOut{to{opacity:0;pointer-events:none}}
-.splash-a{width:110px;height:110px;border-radius:50%;object-fit:cover;border:2px solid rgba(198,168,92,0.35);box-shadow:0 0 40px rgba(198,168,92,0.3),0 0 80px rgba(0,191,255,0.15);animation:splashPop .7s cubic-bezier(.34,1.56,.64,1) .1s both}
+.splash-a{width:130px;height:130px;animation:splashPop .7s cubic-bezier(.34,1.56,.64,1) .1s both;filter:drop-shadow(0 0 22px rgba(0,191,255,0.5)) drop-shadow(0 0 44px rgba(0,140,255,0.25))}
 @keyframes splashPop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
 .splash-ring{position:absolute;border-radius:50%;border:1px solid rgba(0,191,255,0.15);animation:splashRing 1.4s ease-out .2s both}
 @keyframes splashRing{from{width:0;height:0;opacity:.8}to{width:260px;height:260px;opacity:0}}
@@ -188,7 +188,44 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <div id="splash">
   <div class="splash-ring"></div>
   <div class="splash-ring splash-ring2"></div>
-  <img class="splash-a" src="https://i.imgur.com/RcBmjWM.png" alt="A">
+  <svg class="splash-a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+    <defs>
+      <linearGradient id="ag1" x1="30%" y1="0%" x2="70%" y2="100%">
+        <stop offset="0%" stop-color="#60E0FF"/>
+        <stop offset="40%" stop-color="#00BFFF"/>
+        <stop offset="100%" stop-color="#0055CC"/>
+      </linearGradient>
+      <linearGradient id="ag2" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#80EEFF"/>
+        <stop offset="100%" stop-color="#0088DD"/>
+      </linearGradient>
+      <linearGradient id="og1" x1="0%" y1="50%" x2="100%" y2="50%">
+        <stop offset="0%" stop-color="#003388" stop-opacity="0.3"/>
+        <stop offset="40%" stop-color="#00AAFF" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#002266" stop-opacity="0.2"/>
+      </linearGradient>
+      <filter id="af" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="1.5" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <!-- A body — star-leg style matching logo, legs spread wide at bottom -->
+    <!-- Left leg -->
+    <polygon points="100,22 57,155 80,155 100,72" fill="url(#ag1)" filter="url(#af)"/>
+    <!-- Right leg -->
+    <polygon points="100,22 143,155 120,155 100,72" fill="url(#ag2)" filter="url(#af)"/>
+    <!-- Crossbar -->
+    <rect x="72" y="105" width="56" height="13" rx="3" fill="#40D0FF" opacity="0.95"/>
+    <!-- Highlight stripe on left leg -->
+    <polygon points="100,30 92,155 80,155 100,72" fill="rgba(120,220,255,0.18)"/>
+    <!-- Orbit ellipse swoosh -->
+    <ellipse cx="100" cy="112" rx="68" ry="22" fill="none" stroke="url(#og1)" stroke-width="5" stroke-linecap="round" transform="rotate(-18,100,112)"/>
+    <!-- Orbit dot (ball) -->
+    <circle cx="155" cy="82" r="9" fill="#60DDFF">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="155" cy="82" r="5" fill="#B0F0FF"/>
+  </svg>
   <div class="splash-sub">ANICADE TECH</div>
   <div class="splash-bar"><div class="splash-bar-fill"></div></div>
   <div class="splash-ver">TW.1.0.0</div>
@@ -616,23 +653,46 @@ if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(
 
 // ── SPLASH + INIT ────────────────────────────
 renderSvcs();renderRecent();loadLikes();
-// ── SPLASH + INIT ────────────────────────────
+// ── INIT ─────────────────────────────────────
 renderSvcs();
 renderRecent();
 loadLikes();
 
-// Splash: show for 1.8s then fade out and remove
-(function() {
+// ── SPLASH — bulletproof removal ─────────────
+(function(){
+  var app    = document.getElementById('app');
   var splash = document.getElementById('splash');
-  // Make sure app is immediately visible underneath
-  document.getElementById('app').style.opacity = '1';
-  // Remove splash after delay
-  setTimeout(function() {
-    splash.classList.add('hide');
-    setTimeout(function() {
-      if (splash && splash.parentNode) splash.parentNode.removeChild(splash);
-    }, 550);
-  }, 1800);
+
+  // App is visible immediately — splash just overlays
+  app.style.opacity = '1';
+  app.style.transition = 'none';
+
+  function removeSplash(){
+    if(!splash) return;
+    splash.style.transition = 'opacity 0.45s ease';
+    splash.style.opacity    = '0';
+    splash.style.pointerEvents = 'none';
+    setTimeout(function(){
+      if(splash && splash.parentNode) splash.parentNode.removeChild(splash);
+    }, 500);
+  }
+
+  // Primary: 1.8s timer
+  var t = setTimeout(removeSplash, 1800);
+
+  // Failsafe 1: if page already loaded, fire faster
+  if(document.readyState === 'complete'){
+    clearTimeout(t);
+    setTimeout(removeSplash, 800);
+  } else {
+    window.addEventListener('load', function(){
+      clearTimeout(t);
+      setTimeout(removeSplash, 600);
+    });
+  }
+
+  // Failsafe 2: tap splash to dismiss (emergency escape)
+  splash.addEventListener('click', function(){ clearTimeout(t); removeSplash(); });
 })();
 </script>
 </body>
