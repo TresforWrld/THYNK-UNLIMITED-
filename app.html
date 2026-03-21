@@ -628,6 +628,11 @@ if('serviceWorker' in navigator){
   });
 }
 
+// ── INIT ─────────────────────────────────────
+renderSvcs();
+renderRecent();
+loadLikes();
+
 // ── SPLASH REMOVAL ──────────────────────────
 (function(){
   var app    = document.getElementById('app');
