@@ -1,1 +1,21 @@
-.
+{
+  "name": "ANICADE TECH",
+  "short_name": "ANICADE",
+  "description": "Professional Tech Solutions — Web, Ads, AI & More",
+  "start_url": "/ANICADEtech.net-in/index.html",
+  "display": "standalone",
+  "background_color": "#0B1C2D",
+  "theme_color": "#0B1C2D",
+  "icons": [
+    {
+      "src": "/ANICADEtech.net-in/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/ANICADEtech.net-in/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
