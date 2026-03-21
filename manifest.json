@@ -1,21 +1,16 @@
 {
   "name": "ANICADE TECH",
   "short_name": "ANICADE",
-  "description": "Professional Tech Solutions — Web, Ads, AI, Design & More. Kabwe, Zambia.",
-  "start_url": "./app.html",
+  "description": "Professional Tech Solutions — Web, Ads, AI, Design & More",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#0B1C2D",
   "theme_color": "#0B1C2D",
-  "lang": "en",
   "icons": [
-    { "src": "https://i.imgur.com/RcBmjWM.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "https://i.imgur.com/RcBmjWM.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "https://i.imgur.com/9mjKZAj.jpeg", "sizes": "192x192", "type": "image/jpeg", "purpose": "any" },
+    { "src": "https://i.imgur.com/9mjKZAj.jpeg", "sizes": "512x512", "type": "image/jpeg", "purpose": "any maskable" }
   ],
-  "categories": ["business", "productivity"],
-  "shortcuts": [
-    { "name": "Browse Services", "short_name": "Services", "url": "./app.html", "icons": [{ "src": "https://i.imgur.com/RcBmjWM.png", "sizes": "192x192" }] },
-    { "name": "Agent Portal", "short_name": "Portal", "url": "./app.html", "icons": [{ "src": "https://i.imgur.com/RcBmjWM.png", "sizes": "192x192" }] }
-  ]
+  "categories": ["business", "productivity"]
 }
