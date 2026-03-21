@@ -72,10 +72,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 /* ── HERO ── */
 .hero{text-align:center;padding:8px 0 14px}
 .lring-w{display:flex;justify-content:center;margin-bottom:14px}
-.lring{position:relative;width:92px;height:92px;display:flex;align-items:center;justify-content:center}
+.lring{position:relative;width:92px;height:92px;display:flex;align-items:center;justify-content:center;overflow:visible}
 .lring::before{content:'';position:absolute;inset:0;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;border:1.5px solid rgba(198,168,92,0.35);animation:spin1 6s linear infinite}
 .lring::after{content:'';position:absolute;inset:7px;border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border:1px solid rgba(0,191,255,0.25);animation:spin2 4s linear infinite}
-.limg{width:70px;height:70px;border-radius:50%;object-fit:cover;z-index:2;position:relative;border:1.5px solid rgba(198,168,92,0.25);box-shadow:0 0 20px rgba(198,168,92,0.18),0 0 40px rgba(0,191,255,0.07)}
+.limg{width:70px;height:70px;border-radius:50%;object-fit:cover;z-index:2;position:relative;border:1.5px solid rgba(198,168,92,0.25);box-shadow:0 0 20px rgba(198,168,92,0.18),0 0 40px rgba(0,191,255,0.07);overflow:hidden;flex-shrink:0}
 .eyebrow{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--accent);opacity:.7;margin-bottom:8px}
 .htitle{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;line-height:1.18;margin-bottom:8px;letter-spacing:-.5px}
 .htitle .g{color:var(--gold)}
@@ -158,8 +158,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .ver-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:5px;padding:3px 8px;font-family:'Orbitron',sans-serif;font-size:9px;color:rgba(148,163,184,0.45);letter-spacing:1px}
 
 /* ── INSTALL BANNER ── */
-.ibanner{position:fixed;top:0;left:0;right:0;z-index:9998;background:rgba(9,22,36,0.98);border-bottom:1px solid rgba(0,191,255,0.2);padding:10px 14px;display:none;align-items:center;gap:10px;transform:translateY(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
-.ibanner.show{display:flex;transform:translateY(0)}
+.ibanner{position:fixed;top:0;left:0;right:0;z-index:9998;background:rgba(9,22,36,0.98);border-bottom:1px solid rgba(0,191,255,0.2);padding:10px 14px;display:none;align-items:center;gap:10px;transform:translateY(-110%);transition:transform .35s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.ibanner.show{display:flex;transform:translateY(0);pointer-events:all}
 .ibt{flex:1;font-size:11px;color:var(--muted);line-height:1.4}
 .ibt strong{color:var(--text);display:block;font-size:12px;margin-bottom:1px}
 .ibb{background:var(--accent);color:#0B1C2D;border:none;border-radius:6px;padding:7px 11px;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:11px;letter-spacing:.5px;cursor:pointer;white-space:nowrap}
@@ -579,7 +579,7 @@ function showToast(msg){
 let _dp=null;
 window.addEventListener('beforeinstallprompt',e=>{
   e.preventDefault();_dp=e;
-  document.getElementById('ibanner').classList.add('show');
+  document.getElementById('ibanner').classList.add('show'); setBannerPad(true);
   document.getElementById('ibtn-about').disabled=false;
   console.log('[PWA] prompt ready');
 });
@@ -587,23 +587,27 @@ window.addEventListener('beforeinstallprompt',e=>{
 window.addEventListener('load',function(){
   if(!window.matchMedia('(display-mode: standalone)').matches){
     if(!sessionStorage.getItem('anicade_ib_dismissed')){
-      document.getElementById('ibanner').classList.add('show');
+      document.getElementById('ibanner').classList.add('show'); setBannerPad(true);
     }
   }
 });
+function setBannerPad(on){
+  const app = document.getElementById('app');
+  if(app) app.style.paddingTop = on ? '56px' : '0';
+}
 function triggerInstall(){
   if(!_dp){showToast('Open in Chrome on Android to install');return;}
   _dp.prompt();
   _dp.userChoice.then(c=>{
-    if(c.outcome==='accepted'){showToast('App installed!');document.getElementById('ibanner').classList.remove('show');}
+    if(c.outcome==='accepted'){showToast('App installed!');document.getElementById('ibanner').classList.remove('show'); setBannerPad(false);}
     _dp=null;
   });
 }
 function dismissBanner(){
-  document.getElementById('ibanner').classList.remove('show');
+  document.getElementById('ibanner').classList.remove('show'); setBannerPad(false);
   sessionStorage.setItem('anicade_ib_dismissed','1'); // only for this session
 }
-window.addEventListener('appinstalled',()=>{showToast('ANICADE TECH installed!');});
+window.addEventListener('appinstalled',()=>{showToast('ANICADE TECH installed!');document.getElementById('ibanner').classList.remove('show');setBannerPad(false);});
 
 // ── SERVICE WORKER ───────────────────────────
 if('serviceWorker' in navigator){
@@ -620,7 +624,7 @@ loadLikes();
 window.addEventListener('load', function(){
   if(!window.matchMedia('(display-mode: standalone)').matches){
     if(!sessionStorage.getItem('anicade_ib_dismissed')){
-      document.getElementById('ibanner').classList.add('show');
+      document.getElementById('ibanner').classList.add('show'); setBannerPad(true);
     }
   }
 });
