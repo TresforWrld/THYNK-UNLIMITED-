@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ANICADE">
 <meta name="description" content="Professional Tech Solutions — Web, Ads, AI, Design & More">
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.webmanifest"/>
 <title>ANICADE TECH</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -300,7 +300,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
           <h3>ANICADE TECH</h3>
           <div class="arow"><span class="al">Location</span>Kabwe, Zambia</div>
           <div class="arow"><span class="al">Phone</span>+260 777 083 995</div>
-          <div class="arow"><span class="al">Email</span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="accdc2c5cfcdc8c9d8c9cfc4eccbc1cdc5c082cfc3c1">[email&#160;protected]</a></div>
+          <div class="arow"><span class="al">Email</span><a href="mailto:anicadetech@gmail.com" style="color:var(--accent);text-decoration:none">anicadetech@gmail.com</a></div>
           <div class="arow"><span class="al">Founded</span>2024</div>
         </div>
 
@@ -361,7 +361,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 
 <div class="toast" id="toast"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ── DATA (updated prices) ────────────────────
 const SVCS=[
   {id:'basic-website',cat:'Basic',sec:'Website & Digital Presence',name:'Basic Website',price:'K1,500',desc:'Simple website for small businesses and startups'},
@@ -598,6 +598,15 @@ window.addEventListener('beforeinstallprompt',e=>{
   e.preventDefault();_dp=e;
   document.getElementById('ibanner').classList.add('show');
   document.getElementById('ibtn-about').disabled=false;
+  console.log('[PWA] prompt ready');
+});
+// Show banner on load regardless (may already be dismissed this session)
+window.addEventListener('load',function(){
+  if(!window.matchMedia('(display-mode: standalone)').matches){
+    if(!sessionStorage.getItem('anicade_ib_dismissed')){
+      document.getElementById('ibanner').classList.add('show');
+    }
+  }
 });
 function triggerInstall(){
   if(!_dp){showToast('Open in Chrome on Android to install');return;}
@@ -609,23 +618,15 @@ function triggerInstall(){
 }
 function dismissBanner(){
   document.getElementById('ibanner').classList.remove('show');
-  sessionStorage.setItem('anicade_ib_dismissed','1');
+  sessionStorage.setItem('anicade_ib_dismissed','1'); // only for this session
 }
 window.addEventListener('appinstalled',()=>{showToast('ANICADE TECH installed!');});
 
 // ── SERVICE WORKER ───────────────────────────
 if('serviceWorker' in navigator){
-  // Unregister any old service workers, then register fresh
-  navigator.serviceWorker.getRegistrations().then(function(regs){
-    var unregs = regs.filter(function(r){
-      return r.active && r.active.scriptURL && !r.active.scriptURL.includes('sw.js');
-    });
-    Promise.all(unregs.map(function(r){ return r.unregister(); })).then(function(){
-      navigator.serviceWorker.register('sw.js?v=3').catch(function(){});
-    });
-  }).catch(function(){
-    navigator.serviceWorker.register('sw.js?v=3').catch(function(){});
-  });
+  navigator.serviceWorker.register('/ANICADEtech.net-in/sw.js',{scope:'/ANICADEtech.net-in/'})
+    .then(r=>console.log('[SW] ready',r.scope))
+    .catch(e=>console.log('[SW] err',e));
 }
 
 // ── INIT ─────────────────────────────────────
