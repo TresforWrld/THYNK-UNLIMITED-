@@ -487,7 +487,7 @@
 
         <nav>
             <div class="logo">ANICADE<span>.</span>TECH</div>
-            <div class="nav-links">
+            <div class="nav-links" id="main-nav-links"><button id="nav-install-btn" onclick="navInstall()" style="display:none;background:linear-gradient(135deg,#00BFFF,#0077aa);color:#0B1C2D;border:none;padding:7px 14px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;white-space:nowrap;margin-right:6px">&#8681; Install App</button>
                 <a href="#website">Website</a>
                 <a href="#advertising">Ads</a>
                 <a href="#premium">Premium</a>
@@ -508,7 +508,7 @@
             <h1>Professional<br><span class="gold">Tech Solutions</span><br><span class="blue">For You</span></h1>
             <p>Your trusted partner for web development, digital marketing, AI automation, design services and many more.</p>
             <div class="contact-badge">
-                <div class="badge-item"><a href="mailto:anicadetech@gmail.com" style="color:var(--text-light);text-decoration:none">Email</a></div>
+                <div class="badge-item"><a href="/cdn-cgi/l/email-protection#f3929d9a909297968796909bb3949e929a9fdd909c9e" style="color:var(--text-light);text-decoration:none">Email</a></div>
             </div>
         </section>
 
@@ -577,12 +577,22 @@
             <div class="service-card fade-in"><div class="category-badge save-badge">Save K275</div><div class="service-header"><h3>Creator Starter Pack</h3><div class="price">K600</div></div><div class="service-desc">Image Design (5) + Logo + Premium App</div><a href="#" class="whatsapp-btn" onclick="openWA('Creator Starter Pack');return false;" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;vertical-align:middle;flex-shrink:0"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Get Bundle</a><button class="like-btn" id="lb-creator-starter-pack" onclick="toggleLike('creator-starter-pack','Creator Starter Pack');event.stopPropagation()"><svg class="thumb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg><span id="lc-creator-starter-pack">0</span></button></div>
         </div>
 
+<!-- UPDATE BANNER -->
+<div id="update-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,rgba(198,168,92,0.15),rgba(198,168,92,0.08));border-top:1px solid rgba(198,168,92,0.3);padding:12px 16px;display:none;align-items:center;gap:12px;backdrop-filter:blur(10px)">
+  <div style="flex:1;min-width:0">
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:#C6A85C;letter-spacing:.5px;margin-bottom:2px">Update Available</div>
+    <div style="font-family:'Rajdhani',sans-serif;font-size:12px;color:#94A3B8">A new version of ANICADE TECH is ready</div>
+  </div>
+  <button onclick="doUpdate()" style="background:linear-gradient(135deg,#C6A85C,#a8893e);color:#0B1C2D;border:none;padding:9px 16px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;white-space:nowrap">Update Now</button>
+  <button onclick="document.getElementById('update-banner').style.display='none'" style="background:none;border:none;color:rgba(148,163,184,0.4);font-size:18px;cursor:pointer;padding:2px;line-height:1">&#10005;</button>
+</div>
+
         <footer>
             <div class="footer-logo">ANICADE.TECH</div>
             <div class="footer-info">
                 <div>Kabwe, Zambia</div>
                 <div>+260 777 083 995</div>
-                <div><a href="mailto:anicadetech@gmail.com" style="color:var(--text-light);text-decoration:none">Email</a></div>
+                <div><a href="/cdn-cgi/l/email-protection#ed8c83848e8c898899888e85ad8a808c8481c38e8280" style="color:var(--text-light);text-decoration:none">Email</a></div>
             </div>
             <div class="footer-divider"></div>
             <p style="color:rgba(148,163,184,0.5);">© 2026 ANICADE TECH</p>
@@ -591,7 +601,7 @@
 
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {
                 e.preventDefault();
@@ -790,15 +800,100 @@ document.getElementById('installDismiss').addEventListener('click', () => {
   document.getElementById('installPopup').style.display = 'none';
   localStorage.setItem('pwa_dismissed', '1');
 });
+<script>
+let deferredPrompt = null;
+const APP_VER = 'TW.1.0.0';
+const VER_KEY = 'anicade_index_version';
 
-if ('serviceWorker' in navigator) {
+// Capture install prompt
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  console.log('[PWA] prompt ready');
+  // Show nav install button
+  const btn = document.getElementById('nav-install-btn');
+  if(btn) btn.style.display = 'inline-block';
+  // Show bottom popup after 2s if not dismissed
+  if(!localStorage.getItem('pwa_dismissed')){
+    setTimeout(() => {
+      const p = document.getElementById('installPopup');
+      if(p) p.style.display = 'flex';
+    }, 2000);
+  }
+});
+
+window.addEventListener('appinstalled', () => {
+  const p = document.getElementById('installPopup');
+  if(p) p.style.display = 'none';
+  const btn = document.getElementById('nav-install-btn');
+  if(btn) btn.style.display = 'none';
+  deferredPrompt = null;
+});
+
+// Install button in popup
+const installBtn = document.getElementById('installBtn');
+if(installBtn) installBtn.addEventListener('click', async () => {
+  document.getElementById('installPopup').style.display = 'none';
+  if(deferredPrompt){
+    await deferredPrompt.prompt();
+    deferredPrompt = null;
+  }
+});
+
+// Dismiss popup
+const dismissBtn = document.getElementById('installDismiss');
+if(dismissBtn) dismissBtn.addEventListener('click', () => {
+  document.getElementById('installPopup').style.display = 'none';
+  localStorage.setItem('pwa_dismissed', '1');
+});
+
+// Nav install button
+function navInstall(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+  } else {
+    // Already installed or prompt not available — show popup anyway
+    const p = document.getElementById('installPopup');
+    if(p) p.style.display = 'flex';
+  }
+}
+
+// Update detection
+function doUpdate(){
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.getRegistrations().then(regs => {
+      regs.forEach(r => r.unregister());
+      window.location.reload(true);
+    });
+  } else { window.location.reload(true); }
+}
+
+// Service Worker
+if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/ANICADEtech.net-in/sw.js', {
     scope: '/ANICADEtech.net-in/'
   }).then(reg => {
-    console.log('[SW] registered scope:', reg.scope);
-  }).catch(err => {
-    console.log('[SW] failed:', err);
-  });
+    console.log('[SW] registered, scope:', reg.scope);
+    // Check for updates
+    reg.addEventListener('updatefound', () => {
+      const sw = reg.installing;
+      sw.addEventListener('statechange', () => {
+        if(sw.state === 'installed' && navigator.serviceWorker.controller){
+          // New version available — show update banner
+          const banner = document.getElementById('update-banner');
+          if(banner) banner.style.display = 'flex';
+        }
+      });
+    });
+    // Version check
+    const stored = localStorage.getItem(VER_KEY);
+    if(stored && stored !== APP_VER){
+      const banner = document.getElementById('update-banner');
+      if(banner) banner.style.display = 'flex';
+    }
+    localStorage.setItem(VER_KEY, APP_VER);
+  }).catch(e => console.log('[SW] error:', e));
 }
 </script>
 </body>
