@@ -1,41 +1,60 @@
-const CACHE = 'anicade-v1';
+// CACHE VERSION — bump this to force all clients to update
+const CACHE = 'anicade-v3';
 const PRECACHE = [
   './app.html',
-  './manifest.json',
-  'https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap'
+  './manifest.json'
 ];
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(PRECACHE).catch(() => {}))
+    caches.open(CACHE)
+      .then(c => c.addAll(PRECACHE).catch(() => {}))
+      .then(() => self.skipWaiting()) // activate immediately
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', e => {
   e.waitUntil(
+    // Delete ALL old caches
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    )
+      Promise.all(keys.filter(k => k !== CACHE).map(k => {
+        console.log('[SW] Deleting old cache:', k);
+        return caches.delete(k);
+      }))
+    ).then(() => self.clients.claim()) // take control of all pages immediately
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', e => {
-  // Don't intercept API calls or external iframes
-  if (e.request.url.includes('jsonbin.io') ||
-      e.request.url.includes('agentportal') ||
-      e.request.url.includes('wa.me')) return;
+  // Never cache these
+  if (
+    e.request.url.includes('jsonbin.io') ||
+    e.request.url.includes('agentportal') ||
+    e.request.url.includes('wa.me') ||
+    e.request.url.includes('fonts.googleapis')
+  ) return;
 
   e.respondWith(
-    caches.match(e.request).then(cached => {
-      if (cached) return cached;
-      return fetch(e.request).then(resp => {
-        if (!resp || resp.status !== 200 || resp.type === 'opaque') return resp;
-        const clone = resp.clone();
-        caches.open(CACHE).then(c => c.put(e.request, clone));
-        return resp;
-      }).catch(() => caches.match('./app.html'));
-    })
+    // Network first for HTML — always get fresh app.html
+    e.request.destination === 'document'
+      ? fetch(e.request)
+          .then(resp => {
+            if (resp && resp.status === 200) {
+              const clone = resp.clone();
+              caches.open(CACHE).then(c => c.put(e.request, clone));
+            }
+            return resp;
+          })
+          .catch(() => caches.match(e.request))
+      // Cache first for everything else
+      : caches.match(e.request).then(cached => {
+          if (cached) return cached;
+          return fetch(e.request).then(resp => {
+            if (!resp || resp.status !== 200 || resp.type === 'opaque') return resp;
+            const clone = resp.clone();
+            caches.open(CACHE).then(c => c.put(e.request, clone));
+            return resp;
+          });
+        })
   );
 });
