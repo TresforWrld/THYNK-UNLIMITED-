@@ -1,10 +1,13 @@
-const CACHE = 'anicade-tech-v2';
+const CACHE = 'anicade-tech-v3';
 
 self.addEventListener('install', e => {
   self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE).then(c =>
-      c.addAll(['/ANICADEtech.net-in/']).catch(() => {})
+      c.addAll([
+        '/ANICADEtech.net-in/app.html',
+        '/ANICADEtech.net-in/manifest.webmanifest'
+      ]).catch(() => {})
     )
   );
 });
