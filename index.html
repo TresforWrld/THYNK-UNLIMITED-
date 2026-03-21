@@ -731,120 +731,71 @@ _loadLikes();
   <button id="installBtn">Install</button>
   <button id="installDismiss">Later</button>
 </div>
-
-<script>
-let deferredPrompt = null;
-
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if (!localStorage.getItem('pwa_dismissed')) {
-    setTimeout(() => {
-      document.getElementById('installPopup').style.display = 'flex';
-    }, 3000);
-  }
-});
-
-document.getElementById('installBtn').addEventListener('click', async () => {
-  document.getElementById('installPopup').style.display = 'none';
-  if (deferredPrompt) {
-    await deferredPrompt.prompt();
-    deferredPrompt = null;
-  }
-});
-
-document.getElementById('installDismiss').addEventListener('click', () => {
-  document.getElementById('installPopup').style.display = 'none';
-  localStorage.setItem('pwa_dismissed', '1');
-});
-
-window.addEventListener('appinstalled', () => {
-  document.getElementById('installPopup').style.display = 'none';
-  deferredPrompt = null;
-});
-
-if ('serviceWorker' in navigator) {
-if ('serviceWorker' in navigator) {
-  navigator.servi
-<script>
-let deferredPrompt = null;
-let promptShown = false;
-
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  console.log('[PWA] prompt ready');
-  if (!promptShown && !localStorage.getItem('pwa_dismissed')) {
-    promptShown = true;
-    setTimeout(() => {
-      document.getElementById('installPopup').style.display = 'flex';
-    }, 2000);
-  }
-});
-
-window.addEventListener('appinstalled', () => {
-  document.getElementById('installPopup').style.display = 'none';
-  deferredPrompt = null;
-});
-
-document.getElementById('installBtn').addEventListener('click', async () => {
-  document.getElementById('installPopup').style.display = 'none';
-  if (deferredPrompt) {
-    await deferredPrompt.prompt();
-    const choice = await deferredPrompt.userChoice;
-    deferredPrompt = null;
-  }
-});
-
-document.getElementById('installDismiss').addEventListener('click', () => {
-  document.getElementById('installPopup').style.display = 'none';
-  localStorage.setItem('pwa_dismissed', '1');
-});
 <script>
 let deferredPrompt = null;
 const APP_VER = 'TW.1.0.0';
 const VER_KEY = 'anicade_index_version';
 
-// Capture install prompt
+// Capture install prompt when Chrome fires it
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   deferredPrompt = e;
   console.log('[PWA] prompt ready');
-  // Show nav install button
   const btn = document.getElementById('nav-install-btn');
   if(btn) btn.style.display = 'inline-block';
-  // Show bottom popup after 2s if not dismissed
-  if(!localStorage.getItem('pwa_dismissed')){
-    setTimeout(() => {
-      const p = document.getElementById('installPopup');
-      if(p) p.style.display = 'flex';
-    }, 2000);
-  }
 });
 
 window.addEventListener('appinstalled', () => {
-  const p = document.getElementById('installPopup');
-  if(p) p.style.display = 'none';
+  hidePopup();
+  deferredPrompt = null;
   const btn = document.getElementById('nav-install-btn');
   if(btn) btn.style.display = 'none';
-  deferredPrompt = null;
+});
+
+function showPopup(){
+  const p = document.getElementById('installPopup');
+  if(p){ p.style.display = 'flex'; }
+}
+function hidePopup(){
+  const p = document.getElementById('installPopup');
+  if(p) p.style.display = 'none';
+}
+
+// Show popup on every page load — always, no conditions
+// If already installed as standalone, skip
+window.addEventListener('load', function(){
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  if(!isStandalone){
+    setTimeout(showPopup, 1500);
+  }
+
+  // Version / update check
+  const stored = localStorage.getItem(VER_KEY);
+  if(stored && stored !== APP_VER){
+    const banner = document.getElementById('update-banner');
+    if(banner) banner.style.display = 'flex';
+  }
+  localStorage.setItem(VER_KEY, APP_VER);
 });
 
 // Install button in popup
-const installBtn = document.getElementById('installBtn');
-if(installBtn) installBtn.addEventListener('click', async () => {
-  document.getElementById('installPopup').style.display = 'none';
-  if(deferredPrompt){
-    await deferredPrompt.prompt();
-    deferredPrompt = null;
-  }
-});
+document.addEventListener('DOMContentLoaded', function(){
+  const installBtn = document.getElementById('installBtn');
+  if(installBtn) installBtn.addEventListener('click', async () => {
+    hidePopup();
+    if(deferredPrompt){
+      await deferredPrompt.prompt();
+      deferredPrompt = null;
+    } else {
+      // Prompt not available yet — show Chrome menu tip briefly
+      alert('To install: tap the Chrome menu (⋮) and select "Install app"');
+    }
+  });
 
-// Dismiss popup
-const dismissBtn = document.getElementById('installDismiss');
-if(dismissBtn) dismissBtn.addEventListener('click', () => {
-  document.getElementById('installPopup').style.display = 'none';
-  localStorage.setItem('pwa_dismissed', '1');
+  const dismissBtn = document.getElementById('installDismiss');
+  if(dismissBtn) dismissBtn.addEventListener('click', () => {
+    hidePopup();
+  });
 });
 
 // Nav install button
@@ -853,13 +804,11 @@ function navInstall(){
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
   } else {
-    // Already installed or prompt not available — show popup anyway
-    const p = document.getElementById('installPopup');
-    if(p) p.style.display = 'flex';
+    showPopup();
   }
 }
 
-// Update detection
+// Update now
 function doUpdate(){
   if('serviceWorker' in navigator){
     navigator.serviceWorker.getRegistrations().then(regs => {
@@ -874,25 +823,16 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/ANICADEtech.net-in/sw.js', {
     scope: '/ANICADEtech.net-in/'
   }).then(reg => {
-    console.log('[SW] registered, scope:', reg.scope);
-    // Check for updates
+    console.log('[SW] registered:', reg.scope);
     reg.addEventListener('updatefound', () => {
       const sw = reg.installing;
       sw.addEventListener('statechange', () => {
         if(sw.state === 'installed' && navigator.serviceWorker.controller){
-          // New version available — show update banner
           const banner = document.getElementById('update-banner');
           if(banner) banner.style.display = 'flex';
         }
       });
     });
-    // Version check
-    const stored = localStorage.getItem(VER_KEY);
-    if(stored && stored !== APP_VER){
-      const banner = document.getElementById('update-banner');
-      if(banner) banner.style.display = 'flex';
-    }
-    localStorage.setItem(VER_KEY, APP_VER);
   }).catch(e => console.log('[SW] error:', e));
 }
 </script>
