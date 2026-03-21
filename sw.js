@@ -26,21 +26,3 @@ self.addEventListener('activate', function(e) {
     }).then(function(){ return self.clients.claim(); })
   );
 });
-
-self.addEventListener('fetch', function(e) {
-  if (e.request.method !== 'GET') return;
-  if (e.request.url.indexOf('jsonbin.io') > -1) return;
-  if (e.request.url.indexOf('fonts.googleapis') > -1) return;
-  if (e.request.url.indexOf('imgur.com') > -1) return;
-  e.respondWith(
-    fetch(e.request).then(function(r) {
-      if (r && r.status === 200 && r.type !== 'opaque') {
-        var clone = r.clone();
-        caches.open(CACHE_NAME).then(function(c){ c.put(e.request, clone); });
-      }
-      return r;
-    }).catch(function() {
-      return caches.match(e.request);
-    })
-  );
-});
