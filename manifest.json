@@ -1,0 +1,41 @@
+{
+  "name": "ANICADE TECH",
+  "short_name": "ANICADE",
+  "description": "Professional Tech Solutions — Web, Ads, AI, Design & More",
+  "start_url": "./app.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0B1C2D",
+  "theme_color": "#0B1C2D",
+  "icons": [
+    {
+      "src": "https://i.imgur.com/RcBmjWM.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://i.imgur.com/RcBmjWM.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Services",
+      "short_name": "Services",
+      "description": "Browse all services",
+      "url": "./app.html#services",
+      "icons": [{ "src": "https://i.imgur.com/RcBmjWM.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Agent Portal",
+      "short_name": "Portal",
+      "description": "Open agent portal",
+      "url": "./app.html#portal",
+      "icons": [{ "src": "https://i.imgur.com/RcBmjWM.png", "sizes": "96x96" }]
+    }
+  ]
+}
