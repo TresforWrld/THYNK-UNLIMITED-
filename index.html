@@ -503,7 +503,7 @@
             <p>Your trusted partner for web development, digital marketing, AI automation, design services and many more.</p>
             <div class="contact-badge">
                 <div class="badge-item">CONTACT</div>
-                <div class="badge-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:12px;height:12px;opacity:.7;vertical-align:middle"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <strong><a href="mailto:anicadetech@gmail.com" style="color:var(--accent);text-decoration:none">anicadetech@gmail.com</a></strong></div>
+                <div class="badge-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:12px;height:12px;opacity:.7;vertical-align:middle"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <strong><a href="mailto:anicadetech@gmail.com" style="color:var(--text-light);text-decoration:none">anicadetech@gmail.com</a></strong></div>
             </div>
         </section>
 
@@ -586,7 +586,7 @@
 
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {
                 e.preventDefault();
@@ -853,73 +853,16 @@ _loadLikes();
       } else { window.location.reload(true); }
       return;
     }
-    var btn = document.getElementById('ov-btn');
     if(_dp){
-      btn.textContent = 'INSTALLING...';
       _dp.prompt();
-      _dp.userChoice.then(function(choice){
-        _dp = null;
-        if(choice.outcome === 'accepted'){
-          btn.textContent = 'INSTALLED!';
-          setTimeout(hideOverlay, 1500);
-        } else {
-          btn.textContent = 'INSTALL APP';
-        }
-      });
-    } else {
-      // _dp is null - diagnose why
-      var reasons = [];
-      if(!('serviceWorker' in navigator)) reasons.push('SW not supported');
-      var swState = 'unknown';
-      if('serviceWorker' in navigator && navigator.serviceWorker.controller){
-        swState = 'active';
-      } else if('serviceWorker' in navigator){
-        swState = 'no controller';
-      }
-      reasons.push('SW: ' + swState);
-      
-      // Check if already installed
-      if(window.matchMedia('(display-mode: standalone)').matches){
-        reasons.push('already installed');
-        btn.textContent = 'ALREADY INSTALLED';
-        return;
-      }
-      
-      // Most likely cause: app was recently installed/uninstalled
-      // Chrome has a cooldown of 90 days after dismissal
-      // OR the manifest/SW criteria are not met
-      // Register a one-time listener and tell user to wait
-      btn.textContent = 'WAITING...';
-      btn.style.opacity = '0.7';
-      
-      var _once = function(e){
-        e.preventDefault();
-        _dp = e;
-        window.removeEventListener('beforeinstallprompt', _once);
-        btn.textContent = 'INSTALL APP';
-        btn.style.opacity = '1';
-        // Auto-fire now
-        _dp.prompt();
-        _dp.userChoice.then(function(c){
-          _dp = null;
-          if(c.outcome === 'accepted') hideOverlay();
-          else btn.textContent = 'INSTALL APP';
-        });
-      };
-      window.addEventListener('beforeinstallprompt', _once);
-      
-      // If still waiting after 4s, show Chrome menu instructions as last resort
-      setTimeout(function(){
-        if(btn.textContent === 'WAITING...'){
-          btn.textContent = 'INSTALL APP';
-          btn.style.opacity = '1';
-          var body = document.getElementById('ov-body');
-          if(body) body.textContent = 'Chrome needs a moment. Try: tap menu (⋮) in Chrome → "Install app". Ensure you are using Chrome on Android.';
-        }
-      }, 4000);
+      _dp.userChoice.then(function(){ _dp = null; hideOverlay(); });
     }
+    // If _dp null, do nothing — beforeinstallprompt hasn't fired yet
+    // This means Chrome doesn't consider the site installable yet
+    // The user should use Chrome on Android (not Kiwi/Firefox) and ensure
+    // they haven't recently dismissed/installed the app
   };
-  window.ovSkip = function(){ hideOverlay(); };
+    window.ovSkip = function(){ hideOverlay(); };
 
   // ── INIT ──
   if('serviceWorker' in navigator){
@@ -934,7 +877,6 @@ _loadLikes();
       });
     }).catch(function(){});
   }
-
   window.addEventListener('load', function(){
     var stored = localStorage.getItem(VER_KEY);
     if(isInstalled()){
@@ -946,9 +888,7 @@ _loadLikes();
         localStorage.setItem(VER_KEY, APP_VER);
       }
     } else {
-// Show bottom sheet after 2s — gives beforeinstallprompt time to fire
       setTimeout(showPopup, 2000);
-      // Post-login full overlay
       if(sessionStorage.getItem('pwa_show_overlay') === '1'){
         sessionStorage.removeItem('pwa_show_overlay');
         setTimeout(showOverlay, 700);
