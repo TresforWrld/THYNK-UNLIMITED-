@@ -158,8 +158,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .ver-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:5px;padding:3px 8px;font-family:'Orbitron',sans-serif;font-size:9px;color:rgba(148,163,184,0.45);letter-spacing:1px}
 
 /* ── INSTALL BANNER ── */
-.ibanner{background:linear-gradient(135deg,rgba(0,191,255,0.06),rgba(198,168,92,0.04));border:1px solid rgba(0,191,255,0.14);border-radius:10px;padding:10px 12px;margin-bottom:12px;display:none;align-items:center;gap:8px}
-.ibanner.show{display:flex}
+.ibanner{position:fixed;top:0;left:0;right:0;z-index:9998;background:rgba(9,22,36,0.98);border-bottom:1px solid rgba(0,191,255,0.2);padding:10px 14px;display:none;align-items:center;gap:10px;transform:translateY(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.ibanner.show{display:flex;transform:translateY(0)}
 .ibt{flex:1;font-size:11px;color:var(--muted);line-height:1.4}
 .ibt strong{color:var(--text);display:block;font-size:12px;margin-bottom:1px}
 .ibb{background:var(--accent);color:#0B1C2D;border:none;border-radius:6px;padding:7px 11px;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:11px;letter-spacing:.5px;cursor:pointer;white-space:nowrap}
@@ -179,6 +179,13 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
   <div class="splash-ver">TW.1.0.0</div>
 </div>
 
+<div class="ibanner" id="ibanner">
+  <img src="https://i.imgur.com/9mjKZAj.jpeg" style="width:32px;height:32px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1px solid rgba(0,191,255,0.25)">
+  <div class="ibt" style="flex:1;min-width:0"><strong style="font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;color:#F5F7FA;display:block;letter-spacing:.5px">ANICADE TECH</strong><span style="font-family:'Rajdhani',sans-serif;font-size:11px;color:#94A3B8">Install the app for fast access</span></div>
+  <button class="ibb" onclick="triggerInstall()">Install</button>
+  <button class="ibx" onclick="dismissBanner()">&#10005;</button>
+</div>
+
 <div class="rings-bg">
   <div class="ring-el"></div><div class="ring-el"></div><div class="ring-el"></div>
 </div>
@@ -192,12 +199,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
         <div class="ahdr">
           <div class="hlogo">ANICADE<span>.</span>TECH</div>
           <div class="hbadge">&lt; 2HR REPLY</div>
-        </div>
-
-        <div class="ibanner" id="ibanner">
-          <div class="ibt"><strong>Install App</strong>Add ANICADE TECH to your home screen</div>
-          <button class="ibb" onclick="triggerInstall()">Install</button>
-          <button class="ibx" onclick="dismissBanner()">&#10005;</button>
         </div>
 
         <div class="hero">
