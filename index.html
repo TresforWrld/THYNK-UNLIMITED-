@@ -508,8 +508,7 @@
             <h1>Professional<br><span class="gold">Tech Solutions</span><br><span class="blue">For You</span></h1>
             <p>Your trusted partner for web development, digital marketing, AI automation, design services and many more.</p>
             <div class="contact-badge">
-                <div class="badge-item">CONTACT</div>
-                <div class="badge-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:12px;height:12px;opacity:.7;vertical-align:middle"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <strong><a href="/cdn-cgi/l/email-protection#90f1fef9f3f1f4f5e4f5f3f8d0f7fdf1f9fcbef3fffd" style="color:var(--text-light);text-decoration:none"><span class="__cf_email__" data-cfemail="f5949b9c969491908190969db59298949c99db969a98">[email&#160;protected]</span></a></strong></div>
+                <div class="badge-item"><a href="mailto:anicadetech@gmail.com" style="color:var(--accent);text-decoration:none;font-weight:600">Email</a></div>
             </div>
         </section>
 
@@ -583,7 +582,7 @@
             <div class="footer-info">
                 <div>Kabwe, Zambia</div>
                 <div>+260 777 083 995</div>
-                <div><a href="/cdn-cgi/l/email-protection#9bfaf5f2f8fafffeeffef8f3dbfcf6faf2f7b5f8f4f6" style="color:var(--text-light);text-decoration:none"><span class="__cf_email__" data-cfemail="85e4ebece6e4e1e0f1e0e6edc5e2e8e4ece9abe6eae8">[email&#160;protected]</span></a></div>
+                <div><a href="mailto:anicadetech@gmail.com" style="color:var(--text-light);text-decoration:none">Email</a></div>
             </div>
             <div class="footer-divider"></div>
             <p style="color:rgba(148,163,184,0.5);">© 2026 ANICADE TECH</p>
@@ -592,7 +591,7 @@
 
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {
                 e.preventDefault();
@@ -755,7 +754,9 @@ window.addEventListener('appinstalled', () => {
 });
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').catch(() => {});
+  navigator.serviceWorker.register('/ANICADEtech.net-in/sw.js', {scope: '/ANICADEtech.net-in/'}).then(function(reg){
+    console.log('[SW] registered, scope:', reg.scope);
+  }).catch(function(e){ console.log('[SW] error:', e); });
 }
 </script>
 
