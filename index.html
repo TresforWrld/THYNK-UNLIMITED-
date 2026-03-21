@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="manifest" href="manifest.webmanifest"/>
+    <meta name="theme-color" content="#0B1C2D"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-title" content="ANICADE TECH"/>
+    <link rel="apple-touch-icon" href="https://i.imgur.com/9mjKZAj.jpeg"/>
     <meta name="theme-color" content="#0B1C2D">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -688,214 +694,70 @@ _loadLikes();
 </script>
 
 <style>
-/* ── INSTALL POPUP — bottom sheet ── */
-#pwa-popup{
-  position:fixed;top:0;left:0;right:0;
-  transform:translateY(-100%);
-  z-index:99999;
-  background:rgba(9,22,36,0.97);border-bottom:1px solid rgba(0,191,255,0.18);
-  border-radius:0;padding:11px 14px;
-  display:flex;align-items:center;gap:12px;
+.install-popup{
+  display:none;position:fixed;bottom:20px;left:50%;
+  transform:translateX(-50%);
+  z-index:99999;width:calc(100% - 28px);max-width:400px;
+  background:#0d1e30;border:1px solid rgba(0,191,255,0.22);
+  border-radius:18px;padding:14px 14px 12px;
+  flex-direction:row;align-items:center;gap:12px;
   box-shadow:0 8px 40px rgba(0,0,0,0.55);
-  opacity:0;transition:transform .4s cubic-bezier(.34,1.28,.64,1),opacity .3s ease;
-  pointer-events:none;
+  animation:slideUp .4s cubic-bezier(.34,1.28,.64,1) both;
 }
-#pwa-popup.show{transform:translateY(0);opacity:1;pointer-events:all}
-.pp-icon{width:46px;height:46px;border-radius:11px;object-fit:cover;flex-shrink:0;border:1.5px solid rgba(0,191,255,0.22)}
-.pp-text{flex:1;min-width:0}
-.pp-title{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:#F5F7FA;letter-spacing:.5px;margin-bottom:1px}
-.pp-sub{font-family:'Rajdhani',sans-serif;font-size:12px;color:#94A3B8;font-weight:500}
-.pp-btns{display:flex;gap:7px;flex-shrink:0}
-.pp-install{background:linear-gradient(135deg,#00BFFF,#0077aa);color:#0B1C2D;border:none;padding:9px 16px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;white-space:nowrap}
-.pp-later{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#94A3B8;padding:9px 11px;border-radius:20px;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;cursor:pointer}
-
-/* ── POST-LOGIN / UPDATE OVERLAY ── */
-#pwa-overlay{position:fixed;inset:0;z-index:999999;background:rgba(5,12,22,0.93);display:none;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity .3s ease}
-#pwa-overlay.show{opacity:1}
-.pwa-card{background:#0B1C2D;border:1px solid rgba(198,168,92,0.22);border-radius:20px;padding:28px 22px 20px;max-width:300px;width:100%;text-align:center;transform:translateY(20px);transition:transform .3s ease}
-#pwa-overlay.show .pwa-card{transform:translateY(0)}
-.pwa-logo{width:72px;height:72px;border-radius:16px;object-fit:cover;margin:0 auto 14px;display:block;border:2px solid rgba(0,191,255,0.3);box-shadow:0 0 22px rgba(0,191,255,0.22)}
-.pwa-badge{display:inline-block;background:rgba(0,191,255,0.07);border:1px solid rgba(0,191,255,0.15);border-radius:20px;padding:3px 10px;font-family:'Orbitron',sans-serif;font-size:9px;color:#00BFFF;letter-spacing:1.5px;margin-bottom:11px}
-.pwa-name{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:900;color:#C6A85C;letter-spacing:1px;margin-bottom:3px}
-.pwa-sub{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:rgba(0,191,255,0.6);text-transform:uppercase;margin-bottom:13px}
-.pwa-desc{font-family:'Rajdhani',sans-serif;font-size:13px;color:#94A3B8;line-height:1.55;margin-bottom:14px}
-.pwa-desc strong{color:#F5F7FA;display:block;font-size:14px;margin-bottom:3px}
-.pwa-pills{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:18px}
-.pwa-pill{background:rgba(198,168,92,0.06);border:1px solid rgba(198,168,92,0.14);border-radius:20px;padding:3px 9px;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;color:#C6A85C;letter-spacing:.5px;text-transform:uppercase}
-.pwa-btn{width:100%;border:none;padding:13px;border-radius:40px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;cursor:pointer;margin-bottom:9px;background:linear-gradient(135deg,#00BFFF,#0077aa);color:#0B1C2D;box-shadow:0 0 20px rgba(0,191,255,0.2)}
-.pwa-btn.update{background:linear-gradient(135deg,#C6A85C,#a8893e);box-shadow:0 0 20px rgba(198,168,92,0.2)}
-.pwa-skip{width:100%;background:none;border:1px solid rgba(255,255,255,0.06);color:rgba(148,163,184,0.4);padding:10px;border-radius:40px;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;cursor:pointer}
+@keyframes slideUp{from{transform:translateX(-50%) translateY(100px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
+.install-popup img{width:46px;height:46px;border-radius:11px;object-fit:cover;flex-shrink:0;border:1.5px solid rgba(0,191,255,0.25)}
+.install-popup div{flex:1;min-width:0}
+.install-popup p{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:#F5F7FA;letter-spacing:.5px;margin:0 0 2px}
+.install-popup span{font-family:'Rajdhani',sans-serif;font-size:12px;color:#94A3B8;font-weight:500}
+#installBtn{background:linear-gradient(135deg,#00BFFF,#0077aa);color:#0B1C2D;border:none;padding:9px 16px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+#installDismiss{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);color:#94A3B8;padding:9px 11px;border-radius:20px;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0}
 </style>
 
-<!-- BOTTOM SHEET (shows on every load, not installed) -->
-<div id="pwa-popup">
-  <img class="pp-icon" src="https://i.imgur.com/9mjKZAj.jpeg" alt="A">
-  <div class="pp-text">
-    <div class="pp-title">ANICADE TECH</div>
-    <div class="pp-sub">Tap Install to get the app</div>
+<div class="install-popup" id="installPopup">
+  <img src="https://i.imgur.com/9mjKZAj.jpeg" alt="ANICADE TECH"/>
+  <div>
+    <p>ANICADE TECH</p>
+    <span>Install the app for fast access</span>
   </div>
-  <div class="pp-btns">
-    <button class="pp-install" onclick="ppInstall()">INSTALL</button>
-    <button class="pp-later" onclick="ppLater()">Later</button>
-  </div>
-</div>
-
-<!-- FULL OVERLAY (post-login + update only) -->
-<div id="pwa-overlay">
-  <div class="pwa-card">
-    <img class="pwa-logo" src="https://i.imgur.com/9mjKZAj.jpeg" alt="ANICADE">
-    <div class="pwa-badge" id="ov-badge">TW.1.0.0</div>
-    <div class="pwa-name">ANICADE TECH</div>
-    <div class="pwa-sub" id="ov-sub">Install App</div>
-    <div class="pwa-desc">
-      <strong id="ov-heading">Get the App</strong>
-      <span id="ov-body">Install ANICADE TECH for instant access to all 31 services, the Agent Portal and more.</span>
-    </div>
-    <div class="pwa-pills" id="ov-pills">
-      <span class="pwa-pill">31 Services</span>
-      <span class="pwa-pill">Agent Portal</span>
-      <span class="pwa-pill">Offline Ready</span>
-    </div>
-    <button class="pwa-btn" id="ov-btn" onclick="ovAction()">INSTALL APP</button>
-    <button class="pwa-skip" onclick="ovSkip()">Maybe later</button>
-  </div>
+  <button id="installBtn">Install</button>
+  <button id="installDismiss">Later</button>
 </div>
 
 <script>
-(function(){
-  var APP_VER  = 'TW.1.0.0';
-  var VER_KEY  = 'anicade_app_version';
-  var _dp      = null;
-  var _updated = false;
+let deferredPrompt = null;
 
-  // ── Capture beforeinstallprompt — this is Chrome's install trigger
-  // Chrome fires this when: HTTPS + valid manifest + SW registered + not already installed
-  window.addEventListener('beforeinstallprompt', function(e){
-    e.preventDefault();
-    _dp = e;
-    console.log('[PWA] Install prompt captured');
-  });
-
-  window.addEventListener('appinstalled', function(){
-    _dp = null;
-    hidePopup();
-    hideOverlay();
-    console.log('[PWA] App installed');
-  });
-
-  function isInstalled(){
-    return window.matchMedia('(display-mode: standalone)').matches ||
-           navigator.standalone === true;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!localStorage.getItem('pwa_dismissed')) {
+    setTimeout(() => {
+      document.getElementById('installPopup').style.display = 'flex';
+    }, 3000);
   }
+});
 
-  // ── BOTTOM SHEET ──
-  function showPopup(){
-    var p = document.getElementById('pwa-popup');
-    p.style.display = 'flex';
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        p.classList.add('show');
-      });
-    });
+document.getElementById('installBtn').addEventListener('click', async () => {
+  document.getElementById('installPopup').style.display = 'none';
+  if (deferredPrompt) {
+    await deferredPrompt.prompt();
+    deferredPrompt = null;
   }
-  function hidePopup(){
-    var p = document.getElementById('pwa-popup');
-    p.classList.remove('show');
-    setTimeout(function(){ p.style.display = 'none'; }, 420);
-  }
+});
 
-  window.ppInstall = function(){
-    // Don't consume _dp here — save it for the overlay install button
-    hidePopup();
-    showOverlay();
-  };
-  window.ppLater = function(){ hidePopup(); };
+document.getElementById('installDismiss').addEventListener('click', () => {
+  document.getElementById('installPopup').style.display = 'none';
+  localStorage.setItem('pwa_dismissed', '1');
+});
 
-  // ── FULL OVERLAY ──
-  function showOverlay(){
-    var ov = document.getElementById('pwa-overlay');
-    ov.style.display = 'flex';
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        ov.classList.add('show');
-      });
-    });
-  }
-  function hideOverlay(){
-    var ov = document.getElementById('pwa-overlay');
-    ov.classList.remove('show');
-    setTimeout(function(){ ov.style.display = 'none'; }, 320);
-  }
-  window.__showPwaOverlay = showOverlay;
+window.addEventListener('appinstalled', () => {
+  document.getElementById('installPopup').style.display = 'none';
+  deferredPrompt = null;
+});
 
-  function setUpdateMode(){
-    _updated = true;
-    var badge = document.getElementById('ov-badge');
-    badge.textContent  = 'UPDATE AVAILABLE';
-    badge.style.cssText = 'display:inline-block;background:rgba(198,168,92,.08);border:1px solid rgba(198,168,92,.22);color:#C6A85C;border-radius:20px;padding:3px 10px;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.5px;margin-bottom:11px';
-    document.getElementById('ov-sub').textContent     = 'New Version Ready';
-    document.getElementById('ov-heading').textContent = APP_VER + ' is here';
-    document.getElementById('ov-body').textContent    = 'A new version of ANICADE TECH is ready. Reload now for the latest features.';
-    document.getElementById('ov-pills').innerHTML     =
-      '<span class="pwa-pill">New Features</span><span class="pwa-pill">Bug Fixes</span><span class="pwa-pill">Improvements</span>';
-    var btn = document.getElementById('ov-btn');
-    btn.textContent = 'UPDATE NOW';
-    btn.classList.add('update');
-  }
-
-  window.ovAction = function(){
-    if(_updated){
-      if('serviceWorker' in navigator){
-        navigator.serviceWorker.getRegistrations().then(function(regs){
-          regs.forEach(function(r){ r.unregister(); });
-          window.location.reload(true);
-        });
-      } else { window.location.reload(true); }
-      return;
-    }
-    if(_dp){
-      _dp.prompt();
-      _dp.userChoice.then(function(){ _dp = null; hideOverlay(); });
-    }
-    // If _dp null, do nothing — beforeinstallprompt hasn't fired yet
-    // This means Chrome doesn't consider the site installable yet
-    // The user should use Chrome on Android (not Kiwi/Firefox) and ensure
-    // they haven't recently dismissed/installed the app
-  };
-    window.ovSkip = function(){ hideOverlay(); };
-
-  // ── INIT ──
-  if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('/ANICADEtech.net-in/sw.js').then(function(reg){
-      reg.addEventListener('updatefound', function(){
-        var sw = reg.installing;
-        sw.addEventListener('statechange', function(){
-          if(sw.state === 'installed' && navigator.serviceWorker.controller){
-            setUpdateMode(); showOverlay();
-          }
-        });
-      });
-    }).catch(function(){});
-  }
-  window.addEventListener('load', function(){
-    var stored = localStorage.getItem(VER_KEY);
-    if(isInstalled()){
-      if(stored && stored !== APP_VER){
-        localStorage.setItem(VER_KEY, APP_VER);
-        setUpdateMode();
-        setTimeout(showOverlay, 800);
-      } else {
-        localStorage.setItem(VER_KEY, APP_VER);
-      }
-    } else {
-      setTimeout(showPopup, 2000);
-      if(sessionStorage.getItem('pwa_show_overlay') === '1'){
-        sessionStorage.removeItem('pwa_show_overlay');
-        setTimeout(showOverlay, 700);
-      }
-    }
-  });
-})();
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
+}
 </script>
+
 </body>
 </html>
