@@ -1,60 +1,35 @@
-// CACHE VERSION — bump this to force all clients to update
-const CACHE = 'anicade-v4';
-const PRECACHE = [
-  './app.html',
-  './manifest.json'
-];
+const CACHE = 'anicade-v5';
 
-self.addEventListener('install', e => {
+self.addEventListener('install', function(e) {
+  self.skipWaiting();
   e.waitUntil(
-    caches.open(CACHE)
-      .then(c => c.addAll(PRECACHE).catch(() => {}))
-      .then(() => self.skipWaiting()) // activate immediately
+    caches.open(CACHE).then(function(c) {
+      return c.addAll(['./index.html', './manifest.json', './icon-192.png', './icon-512.png']).catch(function(){});
+    })
   );
 });
 
-self.addEventListener('activate', e => {
+self.addEventListener('activate', function(e) {
   e.waitUntil(
-    // Delete ALL old caches
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => {
-        console.log('[SW] Deleting old cache:', k);
-        return caches.delete(k);
-      }))
-    ).then(() => self.clients.claim()) // take control of all pages immediately
+    caches.keys().then(function(keys) {
+      return Promise.all(keys.filter(function(k){ return k !== CACHE; }).map(function(k){ return caches.delete(k); }));
+    }).then(function(){ return self.clients.claim(); })
   );
 });
 
-self.addEventListener('fetch', e => {
-  // Never cache these
-  if (
-    e.request.url.includes('jsonbin.io') ||
-    e.request.url.includes('agentportal') ||
-    e.request.url.includes('wa.me') ||
-    e.request.url.includes('fonts.googleapis')
-  ) return;
-
+self.addEventListener('fetch', function(e) {
+  if (e.request.method !== 'GET') return;
+  if (e.request.url.indexOf('jsonbin.io') > -1) return;
+  if (e.request.url.indexOf('fonts.googleapis') > -1) return;
   e.respondWith(
-    // Network first for HTML — always get fresh app.html
-    e.request.destination === 'document'
-      ? fetch(e.request)
-          .then(resp => {
-            if (resp && resp.status === 200) {
-              const clone = resp.clone();
-              caches.open(CACHE).then(c => c.put(e.request, clone));
-            }
-            return resp;
-          })
-          .catch(() => caches.match(e.request))
-      // Cache first for everything else
-      : caches.match(e.request).then(cached => {
-          if (cached) return cached;
-          return fetch(e.request).then(resp => {
-            if (!resp || resp.status !== 200 || resp.type === 'opaque') return resp;
-            const clone = resp.clone();
-            caches.open(CACHE).then(c => c.put(e.request, clone));
-            return resp;
-          });
-        })
+    fetch(e.request).then(function(r) {
+      if (r && r.status === 200) {
+        var clone = r.clone();
+        caches.open(CACHE).then(function(c){ c.put(e.request, clone); });
+      }
+      return r;
+    }).catch(function() {
+      return caches.match(e.request);
+    })
   );
 });
