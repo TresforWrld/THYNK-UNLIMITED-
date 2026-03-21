@@ -1,5 +1,5 @@
 // CACHE VERSION — bump this to force all clients to update
-const CACHE = 'anicade-v3';
+const CACHE = 'anicade-v4';
 const PRECACHE = [
   './app.html',
   './manifest.json'
