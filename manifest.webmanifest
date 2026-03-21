@@ -2,7 +2,7 @@
   "name": "ANICADE TECH",
   "short_name": "ANICADE",
   "description": "Professional Tech Solutions — Web, Ads, AI & More",
-  "start_url": "/ANICADEtech.net-in/",
+  "start_url": "/ANICADEtech.net-in/app.html",
   "scope": "/ANICADEtech.net-in/",
   "display": "standalone",
   "background_color": "#0B1C2D",
