@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0B1C2D">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ANICADE TECH">
+<meta name="description" content="Professional Tech Solutions — Web, Ads, AI, Design & More">
+<link rel="manifest" href="manifest.json">
+<title>ANICADE TECH</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0B1C2D;--accent:#00BFFF;--gold:#C6A85C;--text:#F5F7FA;
+  --muted:#94A3B8;--success:#39ff14;--border:rgba(255,255,255,0.07);
+  --card:rgba(15,30,48,0.92);--nav-h:58px;--safe-b:env(safe-area-inset-bottom,0px);
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;}
+
+.rings-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.ring-el{position:absolute;top:50%;left:50%;border:1.5px solid transparent;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;will-change:transform}
+.ring-el:nth-child(1){width:700px;height:700px;margin:-350px 0 0 -350px;border-color:rgba(0,191,255,0.07);animation:spin1 22s linear infinite}
+.ring-el:nth-child(2){width:500px;height:500px;margin:-250px 0 0 -250px;border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border-color:rgba(198,168,92,0.06);animation:spin2 15s linear infinite}
+.ring-el:nth-child(3){width:320px;height:320px;margin:-160px 0 0 -160px;border-color:rgba(0,191,255,0.04);animation:spin1 32s linear infinite reverse}
+@keyframes spin1{to{transform:rotate(360deg)}}
+@keyframes spin2{to{transform:rotate(-360deg)}}
+
+#app{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column}
+.screens{flex:1;overflow:hidden;position:relative}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:calc(var(--nav-h) + var(--safe-b) + 16px);opacity:0;pointer-events:none;transform:translateY(10px);transition:opacity .22s ease,transform .22s ease}
+.screen.active{opacity:1;pointer-events:all;transform:translateY(0)}
+.screen-inner{max-width:560px;margin:0 auto;padding:14px 14px 0}
+
+.bottom-nav{height:calc(var(--nav-h) + var(--safe-b));padding-bottom:var(--safe-b);background:rgba(9,22,36,0.97);border-top:1px solid rgba(198,168,92,0.15);display:flex;align-items:stretch;z-index:100;flex-shrink:0}
+.nav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;border:none;background:none;color:var(--muted);transition:color .2s;padding:0;user-select:none;position:relative}
+.nav-tab .ni{font-size:20px;line-height:1;transition:transform .18s}
+.nav-tab .nl{font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.nav-tab.active{color:var(--accent)}
+.nav-tab.active .ni{transform:scale(1.12)}
+.nav-tab::after{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;border-radius:0 0 2px 2px;background:var(--accent);transform:scaleX(0);transition:transform .2s}
+.nav-tab.active::after{transform:scaleX(1)}
+
+.app-header{display:flex;align-items:center;justify-content:space-between;padding:12px 0 10px}
+.hlogo{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:var(--gold);letter-spacing:1.5px}
+.hlogo span{color:var(--accent)}
+.hbadge{background:rgba(0,191,255,0.08);border:1px solid rgba(0,191,255,0.18);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--accent);letter-spacing:.4px}
+
+/* STATS TICKER */
+.stats-bar{background:rgba(198,168,92,0.04);border:1px solid rgba(198,168,92,0.11);border-radius:10px;padding:10px 0;margin-bottom:14px;overflow:hidden;position:relative}
+.stats-bar::before,.stats-bar::after{content:'';position:absolute;top:0;bottom:0;width:28px;z-index:2;pointer-events:none}
+.stats-bar::before{left:0;background:linear-gradient(to right,rgba(11,28,45,1),transparent)}
+.stats-bar::after{right:0;background:linear-gradient(to left,rgba(11,28,45,1),transparent)}
+.stats-track{display:flex;gap:28px;padding:0 14px;animation:ticker 20s linear infinite;white-space:nowrap;width:max-content}
+.stats-track:hover{animation-play-state:paused}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.si{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--muted)}
+.si strong{color:var(--gold);font-family:'Orbitron',sans-serif;font-size:11px}
+.sdot{width:3px;height:3px;border-radius:50%;background:rgba(198,168,92,0.3);flex-shrink:0}
+
+/* HERO */
+.hero-wrap{text-align:center;padding:10px 0 16px}
+.lring-wrap{display:flex;justify-content:center;margin-bottom:14px}
+.lring{position:relative;width:96px;height:96px;display:flex;align-items:center;justify-content:center}
+.lring::before{content:'';position:absolute;inset:0;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;border:2px solid rgba(198,168,92,0.38);animation:spin1 6s linear infinite}
+.lring::after{content:'';position:absolute;inset:7px;border-radius:41% 44% 56% 59%/38% 62% 63% 37%;border:1.5px solid rgba(0,191,255,0.28);animation:spin2 4s linear infinite}
+.limg{width:72px;height:72px;border-radius:50%;object-fit:cover;z-index:2;position:relative;border:2px solid rgba(198,168,92,0.28);box-shadow:0 0 22px rgba(198,168,92,0.22),0 0 40px rgba(0,191,255,0.08)}
+.eyebrow{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--accent);opacity:.75;margin-bottom:9px}
+.htitle{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;line-height:1.15;margin-bottom:9px;letter-spacing:-.5px}
+.htitle .g{color:var(--gold);text-shadow:0 0 18px rgba(198,168,92,0.32)}
+.htitle .b{color:var(--accent);text-shadow:0 0 18px rgba(0,191,255,0.28)}
+.hsub{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5}
+.cstrip{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+.cchip{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.025);border:1px solid rgba(198,168,92,0.13);border-radius:20px;padding:6px 11px;font-size:11px;font-weight:600;color:var(--muted)}
+.cchip strong{color:var(--accent)}
+.rchip{background:rgba(57,255,20,0.04);border-color:rgba(57,255,20,0.18);color:rgba(57,255,20,0.75)}
+.rdot{width:6px;height:6px;border-radius:50%;background:var(--success);animation:pdot 2s ease infinite;flex-shrink:0}
+@keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
+
+/* RECENT */
+.recent-strip{margin-bottom:14px}
+.rlabel{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;opacity:.65}
+.ritems{display:flex;gap:7px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.ritems::-webkit-scrollbar{display:none}
+.rchip2{flex-shrink:0;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.14);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:600;color:var(--accent);cursor:pointer;white-space:nowrap}
+
+/* SEARCH */
+.swrap{position:relative;margin-bottom:14px}
+.sinput{width:100%;background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 13px 10px 36px;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:500;color:var(--text);outline:none;transition:border-color .2s}
+.sinput:focus{border-color:rgba(0,191,255,0.32)}
+.sinput::placeholder{color:rgba(148,163,184,0.38)}
+.sicon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;opacity:.35;pointer-events:none}
+.sclear{position:absolute;right:9px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.07);border:none;color:var(--muted);border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:11px;display:none;align-items:center;justify-content:center}
+.sclear.show{display:flex}
+
+/* SECTION TITLE */
+.stitle{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text);display:flex;align-items:center;gap:9px;margin:20px 0 10px}
+.stitle::before{content:'';width:3px;height:16px;background:linear-gradient(to bottom,var(--gold),var(--accent));border-radius:2px;flex-shrink:0}
+.stitle::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(198,168,92,0.14),transparent)}
+.no-res{text-align:center;padding:36px 0;color:var(--muted);font-size:13px}
+
+/* SERVICE CARD */
+.scard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:9px;position:relative;overflow:hidden;animation:fadeUp .28s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.scard.popular::before{content:'🔥 POPULAR';position:absolute;top:0;right:0;background:rgba(198,168,92,0.12);color:var(--gold);font-size:9px;font-weight:700;letter-spacing:1px;padding:4px 9px;border-radius:0 12px 0 8px;border-left:1px solid rgba(198,168,92,0.18);border-bottom:1px solid rgba(198,168,92,0.18)}
+.cbadge{display:inline-block;padding:2px 8px;background:rgba(0,191,255,0.07);color:var(--accent);border:1px solid rgba(0,191,255,0.14);border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;margin-bottom:9px}
+.sbadge{background:rgba(198,168,92,0.07);color:var(--gold);border-color:rgba(198,168,92,0.18)}
+.srow{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px}
+.sname{font-size:14px;font-weight:700;color:var(--text);line-height:1.2}
+.sprice{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:var(--success);white-space:nowrap;text-shadow:0 0 8px rgba(57,255,20,0.16)}
+.sprice small{font-size:10px;color:var(--muted);font-family:'Rajdhani',sans-serif;font-weight:400}
+.sdesc{color:var(--muted);font-size:12px;margin-bottom:11px;line-height:1.4}
+.sacts{display:flex;align-items:center;gap:7px}
+.wabtn{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;padding:8px 12px;border-radius:8px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;user-select:none}
+.lbtn{display:flex;align-items:center;gap:4px;background:rgba(0,191,255,0.06);border:1px solid rgba(0,191,255,0.13);border-radius:20px;padding:7px 10px;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:rgba(245,247,250,0.38);cursor:pointer;user-select:none;transition:all .15s;flex-shrink:0}
+.lbtn.liked{background:rgba(0,191,255,0.13);border-color:rgba(0,191,255,0.38);color:var(--accent)}
+.lbtn .ti{font-size:12px;opacity:.45;display:inline-block;transition:transform .18s,opacity .18s}
+.lbtn.liked .ti{opacity:1;transform:scale(1.18) rotate(-7deg)}
+
+.agentcard{background:linear-gradient(135deg,rgba(0,191,255,0.04),rgba(198,168,92,0.04));border-color:rgba(198,168,92,0.18)}
+.agentcard .sprice{color:var(--gold);text-shadow:0 0 8px rgba(198,168,92,0.22)}
+.applybtn{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg,var(--gold),#a8893e);color:#0B1C2D;border:none;padding:8px 12px;border-radius:8px;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:11px;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;user-select:none}
+
+/* FLOAT BTN */
+.float-chat{position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 12px);right:14px;z-index:90;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#25D366,#128C7E);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 4px 18px rgba(37,211,102,0.38);animation:fpulse 2.8s ease infinite}
+@keyframes fpulse{0%,100%{box-shadow:0 4px 18px rgba(37,211,102,0.38),0 0 0 0 rgba(37,211,102,0.25)}65%{box-shadow:0 4px 18px rgba(37,211,102,0.38),0 0 0 10px rgba(37,211,102,0)}}
+
+/* PORTAL */
+.portal-frame{width:100%;height:100%;border:none;display:block}
+.portal-load{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:14px;color:var(--muted)}
+.pspin{width:36px;height:36px;border:2px solid rgba(0,191,255,0.12);border-top-color:var(--accent);border-radius:50%;animation:spin1 .75s linear infinite}
+
+/* ABOUT */
+.abox{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:11px}
+.abox h3{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:11px}
+.arow{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--muted)}
+.arow:last-child{border-bottom:none;padding-bottom:0}
+.arow .al{color:var(--text);font-weight:600;min-width:72px}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px}
+.sbox{background:rgba(0,191,255,0.035);border:1px solid rgba(0,191,255,0.09);border-radius:10px;padding:13px;text-align:center}
+.sbox .sn{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;color:var(--gold);display:block;margin-bottom:2px}
+.sbox .sl{font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.5px}
+.instbtn{width:100%;background:linear-gradient(135deg,var(--accent),#0080aa);color:#fff;border:none;padding:12px;border-radius:9px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;margin-top:11px}
+.instbtn:disabled{opacity:.35;cursor:default}
+
+/* INSTALL BANNER */
+.ibanner{background:linear-gradient(135deg,rgba(0,191,255,0.07),rgba(198,168,92,0.05));border:1px solid rgba(0,191,255,0.16);border-radius:11px;padding:11px 13px;margin-bottom:13px;display:none;align-items:center;gap:9px}
+.ibanner.show{display:flex}
+.ibt{flex:1;font-size:12px;color:var(--muted);line-height:1.4}
+.ibt strong{color:var(--text);display:block;font-size:12px;margin-bottom:1px}
+.ibb{background:var(--accent);color:#0B1C2D;border:none;border-radius:7px;padding:7px 12px;font-family:'Rajdhani',sans-serif;font-weight:800;font-size:11px;letter-spacing:.4px;cursor:pointer;white-space:nowrap}
+.ibx{background:none;border:none;color:var(--muted);font-size:15px;cursor:pointer;padding:0}
+
+/* TOAST */
+.toast{position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 66px);left:50%;transform:translateX(-50%) translateY(6px);background:rgba(15,30,48,0.97);border:1px solid rgba(0,191,255,0.22);color:var(--text);padding:9px 16px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap;z-index:999;opacity:0;transition:opacity .18s,transform .18s;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="rings-bg">
+  <div class="ring-el"></div><div class="ring-el"></div><div class="ring-el"></div>
+</div>
+
+<div id="app">
+  <div class="screens">
+
+    <!-- HOME -->
+    <div class="screen active" id="s-home">
+      <div class="screen-inner">
+        <div class="app-header">
+          <div class="hlogo">ANICADE<span>.</span>TECH</div>
+          <div class="hbadge">⚡ &lt;2hr reply</div>
+        </div>
+
+        <div class="ibanner" id="ibanner">
+          <div class="ibt"><strong>Install ANICADE TECH</strong>Add to home screen for instant access</div>
+          <button class="ibb" onclick="triggerInstall()">Install</button>
+          <button class="ibx" onclick="dismissBanner()">✕</button>
+        </div>
+
+        <div class="hero-wrap">
+          <div class="lring-wrap"><div class="lring"><img src="https://i.imgur.com/RcBmjWM.png" class="limg" alt="ANICADE TECH"></div></div>
+          <div class="eyebrow">Tech Beyond Limits</div>
+          <div class="htitle">Professional<br><span class="g">Tech Solutions</span><br><span class="b">For You</span></div>
+          <div class="hsub">Web · Ads · AI · Design · Premium Apps</div>
+          <div class="cstrip">
+            <div class="cchip">📱 <strong>+260 777 083 995</strong></div>
+            <div class="cchip rchip"><span class="rdot"></span>Avg. reply under 2hrs</div>
+          </div>
+        </div>
+
+        <div class="stats-bar">
+          <div class="stats-track" id="sttrack">
+            <div class="si"><strong id="sc1">120+</strong>Clients</div><div class="sdot"></div>
+            <div class="si"><strong>31</strong>Services</div><div class="sdot"></div>
+            <div class="si"><strong id="sl1">—</strong>Likes</div><div class="sdot"></div>
+            <div class="si"><strong>98%</strong>Satisfaction</div><div class="sdot"></div>
+            <div class="si"><strong>Est.</strong>2024 · Kabwe ZM</div><div class="sdot"></div>
+            <div class="si"><strong id="sc2">120+</strong>Clients</div><div class="sdot"></div>
+            <div class="si"><strong>31</strong>Services</div><div class="sdot"></div>
+            <div class="si"><strong id="sl2">—</strong>Likes</div><div class="sdot"></div>
+            <div class="si"><strong>98%</strong>Satisfaction</div><div class="sdot"></div>
+            <div class="si"><strong>Est.</strong>2024 · Kabwe ZM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="screen" id="s-services">
+      <div class="screen-inner">
+        <div class="app-header">
+          <div class="hlogo">Services</div>
+          <div class="hbadge" id="svc-badge">31 Services</div>
+        </div>
+
+        <div class="recent-strip" id="rstrip" style="display:none">
+          <div class="rlabel">Recently Viewed</div>
+          <div class="ritems" id="ritems"></div>
+        </div>
+
+        <div class="swrap">
+          <span class="sicon">🔍</span>
+          <input class="sinput" id="sinput" type="search" placeholder="Search services…" autocomplete="off" oninput="filterSvcs(this.value)">
+          <button class="sclear" id="sclear" onclick="clearSearch()">✕</button>
+        </div>
+
+        <div id="svc-list"></div>
+        <div class="no-res" id="no-res" style="display:none">No results for "<span id="no-q"></span>"</div>
+      </div>
+    </div>
+
+    <!-- PORTAL -->
+    <div class="screen" id="s-portal">
+      <div class="portal-load" id="pload">
+        <div class="pspin"></div>
+        <div style="font-size:12px;font-weight:600">Loading Agent Portal…</div>
+      </div>
+      <iframe id="piframe" class="portal-frame" style="display:none" allow="camera;microphone"></iframe>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="screen" id="s-about">
+      <div class="screen-inner">
+        <div class="app-header"><div class="hlogo">About</div></div>
+
+        <div class="abox">
+          <h3>ANICADE TECH</h3>
+          <div class="arow"><span class="al">Location</span>Kabwe, Zambia</div>
+          <div class="arow"><span class="al">Phone</span>+260 777 083 995</div>
+          <div class="arow"><span class="al">Email</span>anicadetech@gmail.com</div>
+          <div class="arow"><span class="al">WhatsApp</span><a href="https://wa.me/message/D3GSC6P7RORZD1" style="color:var(--accent)" target="_blank">Open Chat</a></div>
+          <div class="arow"><span class="al">Founded</span>2024</div>
+        </div>
+
+        <div class="sgrid">
+          <div class="sbox"><span class="sn">120+</span><div class="sl">Clients</div></div>
+          <div class="sbox"><span class="sn">31</span><div class="sl">Services</div></div>
+          <div class="sbox"><span class="sn">98%</span><div class="sl">Satisfaction</div></div>
+          <div class="sbox"><span class="sn" id="a-likes">—</span><div class="sl">Total Likes</div></div>
+        </div>
+
+        <div class="abox">
+          <h3>App Info</h3>
+          <div class="arow"><span class="al">Version</span>1.0.0</div>
+          <div class="arow"><span class="al">Platform</span>PWA (Android + iOS)</div>
+          <div class="arow"><span class="al">Offline</span>Partial support</div>
+          <button class="instbtn" id="ibtn-about" onclick="triggerInstall()" disabled>📲 Install App on Device</button>
+        </div>
+
+        <div class="abox">
+          <h3>Links</h3>
+          <div class="arow"><a href="https://tresforwrld.github.io/ANICADEtech.net/" style="color:var(--accent)" target="_blank">🌐 Main Website</a></div>
+          <div class="arow"><a href="https://tresforwrld.github.io/ANICADEtech.net-in/agents.html" style="color:var(--accent)" target="_blank">🧠 Become an Agent</a></div>
+          <div class="arow"><a href="terms.html" style="color:var(--muted)" target="_blank">📄 Terms of Use</a></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-tab active" onclick="goScreen('s-home',this)"><span class="ni">🏠</span><span class="nl">Home</span></button>
+    <button class="nav-tab" onclick="goScreen('s-services',this)"><span class="ni">⚡</span><span class="nl">Services</span></button>
+    <button class="nav-tab" onclick="goScreen('s-portal',this)"><span class="ni">🧠</span><span class="nl">Portal</span></button>
+    <button class="nav-tab" onclick="goScreen('s-about',this)"><span class="ni">ℹ️</span><span class="nl">About</span></button>
+  </nav>
+</div>
+
+<button class="float-chat" onclick="openWA(null)">💬</button>
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ────────────────────────────────────
+const SVCS=[
+  {id:'basic-website',cat:'Basic',sec:'🌐 Website & Digital Presence',name:'Basic Website',price:'K1,500',desc:'Simple website for small businesses and startups'},
+  {id:'standard-business-website',cat:'Business',sec:'🌐 Website & Digital Presence',name:'Standard Business Website',price:'K3,000',desc:'Multi-page professional website with CMS'},
+  {id:'e-commerce-store',cat:'E-commerce',sec:'🌐 Website & Digital Presence',name:'E-commerce Store',price:'K4,500',desc:'Full online store with payment integration'},
+  {id:'portfolio-website',cat:'Portfolio',sec:'🌐 Website & Digital Presence',name:'Portfolio Website',price:'K1,750',desc:'Showcase your work professionally'},
+  {id:'website-redesign',cat:'Redesign',sec:'🌐 Website & Digital Presence',name:'Website Redesign',price:'K1,250',desc:'Modernize your existing website'},
+  {id:'website-maintenance',cat:'Maintenance',sec:'🌐 Website & Digital Presence',name:'Website Maintenance',price:'K625 /mo',desc:'Monthly updates, security, backups'},
+  {id:'domain-hosting-setup',cat:'Setup',sec:'🌐 Website & Digital Presence',name:'Domain + Hosting Setup',price:'K375',desc:'One-time setup and configuration'},
+  {id:'24-hour-advertising-slot',cat:'Ads',sec:'📢 Advertising & Promotion',name:'24-hour Advertising Slot',price:'K150',desc:'Premium placement for 24 hours'},
+  {id:'ad-creative-design',cat:'Creative',sec:'📢 Advertising & Promotion',name:'Ad Creative Design',price:'K375',desc:'Professional graphics and copy'},
+  {id:'ads-account-setup',cat:'Setup',sec:'📢 Advertising & Promotion',name:'Ads Account Setup',price:'K500',desc:'Facebook/Google Ads configuration'},
+  {id:'landing-page-for-ads',cat:'Landing Page',sec:'📢 Advertising & Promotion',name:'Landing Page for Ads',price:'K875',desc:'High-converting landing page'},
+  {id:'sales-funnel-setup',cat:'Funnel',sec:'📢 Advertising & Promotion',name:'Sales Funnel Setup',price:'K1,500',desc:'Complete funnel from ad to sale'},
+  {id:'monthly-ads-management',cat:'Management',sec:'📢 Advertising & Promotion',name:'Monthly Ads Management',price:'K1,250 /mo',desc:'Ongoing campaign optimization'},
+  {id:'lifetime-premium-apps',cat:'Apps',sec:'📲 Lifetime Premium Digital Products',name:'Lifetime Premium Apps',price:'K100–150',desc:'Per app, lifetime access'},
+  {id:'private-premium-app-library',cat:'Library',sec:'📲 Lifetime Premium Digital Products',name:'Private Premium App Library',price:'K200',desc:'Access to ALL premium apps'},
+  {id:'mod-app-configuration',cat:'Mods',sec:'📲 Lifetime Premium Digital Products',name:'Mod App Configuration',price:'K250',desc:'Custom mod setup'},
+  {id:'ad-free-app-optimization',cat:'Ad-Free',sec:'📲 Lifetime Premium Digital Products',name:'Ad-Free App Optimization',price:'K150',desc:'Remove ads from your apps'},
+  {id:'app-support-updates',cat:'Support',sec:'📲 Lifetime Premium Digital Products',name:'App Support & Updates',price:'K100 /mo',desc:'Monthly maintenance'},
+  {id:'logo-design',cat:'Logo',sec:'🎨 Design & Branding',name:'Logo Design',price:'K375',desc:'Professional logo with 3 concepts'},
+  {id:'full-brand-identity-kit',cat:'Brand Identity',sec:'🎨 Design & Branding',name:'Full Brand Identity Kit',price:'K1,125',desc:'Logo, colors, fonts, business cards'},
+  {id:'digital-product-setup',cat:'Product',sec:'🎨 Design & Branding',name:'Digital Product Setup',price:'K875',desc:'Your product ready for market'},
+  {id:'image-design-pack',cat:'Image Pack',sec:'🎨 Design & Branding',name:'Image Design Pack',price:'K100',desc:'5 custom designs'},
+  {id:'social-media-graphics',cat:'Social',sec:'🎨 Design & Branding',name:'Social Media Graphics',price:'K375',desc:'5 social media posts'},
+  {id:'custom-visual-graphics',cat:'Custom',sec:'🎨 Design & Branding',name:'Custom Visual Graphics',price:'K500',desc:'Bespoke graphics for any need'},
+  {id:'ai-chatbot-for-business',cat:'Chatbot',sec:'🤖 AI & Automation Services',name:'AI Chatbot for Business',price:'K1,250',desc:'24/7 customer support bot'},
+  {id:'social-media-automation',cat:'Automation',sec:'🤖 AI & Automation Services',name:'Social Media Automation',price:'K875',desc:'Auto-post across platforms'},
+  {id:'ai-content-system-setup',cat:'Content',sec:'🤖 AI & Automation Services',name:'AI Content System Setup',price:'K750',desc:'Automated content generation'},
+  {id:'workflow-automation',cat:'Workflow',sec:'🤖 AI & Automation Services',name:'Workflow Automation',price:'K1,000',desc:'Connect your apps automatically'},
+  {id:'analytics-reporting-dashboard',cat:'Analytics',sec:'🤖 AI & Automation Services',name:'Analytics & Reporting Dashboard',price:'K875',desc:'Real-time business insights'},
+  {id:'starter-web-ads',cat:'Bundle',sec:'📦 Bundle Packages',name:'Starter Web + Ads',price:'K1,600',desc:'Basic Website + 24hr Advertising — Save K50!',save:true},
+  {id:'creator-starter-pack',cat:'Bundle',sec:'📦 Bundle Packages',name:'Creator Starter Pack',price:'K800',desc:'Image Design (5) + Logo + Premium App — Save K175!',save:true},
+];
+
+// ── DB / LIKES ───────────────────────────────
+const BIN='69af45d3d0ea881f4001fd93';
+const KEY='$2a$10$VJXQzwtVgNhMTIJiiQvpy.hG7XaRD0.H42NyZhKzeLRungeekMmpO';
+const DURL='https://api.jsonbin.io/v3/b/'+BIN;
+const LKEY='anicade_liked_svcs';
+let _likes={},_mine={},_popId=null;
+try{_mine=JSON.parse(localStorage.getItem(LKEY)||'{}');}catch(e){}
+
+async function loadLikes(){
+  try{
+    const r=await fetch(DURL+'/latest',{headers:{'X-Master-Key':KEY}});
+    const j=await r.json();
+    _likes=(j.record&&j.record.serviceLikes)?j.record.serviceLikes:{};
+  }catch(e){_likes={};}
+  let mx=1,mid=null;
+  Object.entries(_likes).forEach(([k,v])=>{if(v>mx){mx=v;mid=k;}});
+  _popId=mid;
+  renderLikes();
+  updateStats();
+}
+
+function renderLikes(){
+  document.querySelectorAll('.lbtn[data-s]').forEach(b=>{
+    const s=b.dataset.s;
+    const c=b.querySelector('.lc');
+    if(c)c.textContent=_likes[s]||0;
+    if(_mine[s])b.classList.add('liked');else b.classList.remove('liked');
+  });
+  document.querySelectorAll('.scard[data-id]').forEach(c=>{
+    if(c.dataset.id===_popId)c.classList.add('popular');
+    else c.classList.remove('popular');
+  });
+}
+
+function updateStats(){
+  const tot=Object.values(_likes).reduce((a,b)=>a+(b||0),0);
+  ['sl1','sl2','a-likes'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.textContent=tot||'0';
+  });
+}
+
+async function toggleLike(slug,el){
+  el.stopPropagation&&el.stopPropagation();
+  const already=!!_mine[slug];
+  if(already){delete _mine[slug];_likes[slug]=Math.max(0,(_likes[slug]||1)-1);}
+  else{_mine[slug]=1;_likes[slug]=(_likes[slug]||0)+1;}
+  try{localStorage.setItem(LKEY,JSON.stringify(_mine));}catch(e){}
+  renderLikes();updateStats();
+  showToast(already?'Like removed':'👍 Liked!');
+  try{
+    const r=await fetch(DURL+'/latest',{headers:{'X-Master-Key':KEY}});
+    const j=await r.json();
+    const rec=j.record||{};
+    if(!rec.serviceLikes)rec.serviceLikes={};
+    rec.serviceLikes[slug]=_likes[slug];
+    await fetch(DURL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':KEY},body:JSON.stringify(rec)});
+  }catch(e){}
+}
+
+// ── RECENTLY VIEWED ─────────────────────────
+const RK='anicade_recent_svcs';
+let _rec=[];
+try{_rec=JSON.parse(localStorage.getItem(RK)||'[]');}catch(e){}
+
+function trackView(id,name){
+  _rec=_rec.filter(r=>r.id!==id);
+  _rec.unshift({id,name});
+  _rec=_rec.slice(0,3);
+  try{localStorage.setItem(RK,JSON.stringify(_rec));}catch(e){}
+  renderRecent();
+}
+
+function renderRecent(){
+  const s=document.getElementById('rstrip');
+  const i=document.getElementById('ritems');
+  if(!_rec.length){s.style.display='none';return;}
+  s.style.display='block';
+  i.innerHTML=_rec.map(r=>`<div class="rchip2" onclick="searchFor('${r.name.replace(/'/g,"\\'")}')">↩ ${r.name}</div>`).join('');
+}
+
+function searchFor(name){
+  const inp=document.getElementById('sinput');
+  inp.value=name;filterSvcs(name);
+}
+
+// ── RENDER SERVICES ──────────────────────────
+function cardHTML(s){
+  const isAgent=false;
+  const bc=s.save?'sbadge':'';
+  const cc=s.save?'scard':s.id&&s.id.includes('agent')?'scard agentcard':'scard';
+  const priceDisp=s.price.replace(' /mo','<small>/mo</small>');
+  const n=s.name.replace(/'/g,"\\'");
+  return `<div class="${cc}" data-id="${s.id}" onclick="trackView('${s.id}','${n}')">
+  <div class="cbadge ${bc}">${s.cat}</div>
+  <div class="srow"><div class="sname">${s.name}</div><div class="sprice">${priceDisp}</div></div>
+  <div class="sdesc">${s.desc}</div>
+  <div class="sacts">
+    <button class="wabtn" onclick="openWA('${n}');event.stopPropagation()">📱 Get via WhatsApp</button>
+    <button class="lbtn" data-s="${s.id}" onclick="toggleLike('${s.id}',event);event.stopPropagation()">
+      <span class="ti">👍</span><span class="lc">${_likes[s.id]||0}</span>
+    </button>
+  </div>
+</div>`;
+}
+
+function renderSvcs(q=''){
+  const list=document.getElementById('svc-list');
+  const noRes=document.getElementById('no-res');
+  const badge=document.getElementById('svc-badge');
+  const ql=q.toLowerCase().trim();
+  const f=ql?SVCS.filter(s=>
+    s.name.toLowerCase().includes(ql)||
+    s.cat.toLowerCase().includes(ql)||
+    s.sec.toLowerCase().includes(ql)||
+    s.desc.toLowerCase().includes(ql)
+  ):SVCS;
+  if(!f.length){
+    list.innerHTML='';
+    noRes.style.display='block';
+    document.getElementById('no-q').textContent=q;
+    badge.textContent='0 results';
+    return;
+  }
+  noRes.style.display='none';
+  badge.textContent=f.length+' Service'+(f.length!==1?'s':'');
+  if(!ql){
+    const secs=[...new Set(f.map(s=>s.sec))];
+    list.innerHTML=secs.map(sec=>`<div class="stitle">${sec}</div>`+f.filter(s=>s.sec===sec).map(cardHTML).join('')).join('');
+  }else{
+    list.innerHTML=f.map(cardHTML).join('');
+  }
+  renderLikes();
+}
+
+function filterSvcs(v){
+  document.getElementById('sclear').classList.toggle('show',v.length>0);
+  renderSvcs(v);
+}
+
+function clearSearch(){
+  document.getElementById('sinput').value='';
+  filterSvcs('');
+}
+
+// ── WHATSAPP ─────────────────────────────────
+function openWA(service){
+  let url;
+  if(service){
+    const msg='\x60'+service+' Enquiry\x60\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\nHi! I would like to get more information about this service. Could you please get back to me? \uD83D\uDE4F';
+    url='https://wa.me/260777083995?text='+encodeURIComponent(msg);
+  }else{
+    url='https://wa.me/message/D3GSC6P7RORZD1';
+  }
+  window.open(url,'_blank');
+}
+
+// ── NAV ──────────────────────────────────────
+let _portalLoaded=false;
+function goScreen(id,tab){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(tab)tab.classList.add('active');
+  if(id==='s-portal'&&!_portalLoaded){
+    _portalLoaded=true;
+    const iframe=document.getElementById('piframe');
+    const pload=document.getElementById('pload');
+    iframe.src='https://tresforwrld.github.io/Agents.Code.generator/agentportal.html';
+    iframe.onload=()=>{pload.style.display='none';iframe.style.display='block';};
+    iframe.onerror=()=>{pload.innerHTML='<div style="font-size:12px;color:var(--muted);text-align:center;padding:20px">Could not load portal.<br><a href="https://tresforwrld.github.io/Agents.Code.generator/agentportal.html" target="_blank" style="color:var(--accent)">Open in browser →</a></div>';};
+  }
+}
+
+// ── TOAST ────────────────────────────────────
+let _tt;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// ── PWA INSTALL ──────────────────────────────
+let _dp=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();_dp=e;
+  if(!localStorage.getItem('anicade_ib_dismissed'))
+    document.getElementById('ibanner').classList.add('show');
+  document.getElementById('ibtn-about').disabled=false;
+});
+function triggerInstall(){
+  if(!_dp){showToast('Open in Chrome to install');return;}
+  _dp.prompt();
+  _dp.userChoice.then(c=>{
+    if(c.outcome==='accepted'){showToast('App installed!');document.getElementById('ibanner').classList.remove('show');}
+    _dp=null;
+  });
+}
+function dismissBanner(){
+  document.getElementById('ibanner').classList.remove('show');
+  localStorage.setItem('anicade_ib_dismissed','1');
+}
+window.addEventListener('appinstalled',()=>{
+  showToast('ANICADE TECH installed!');
+  document.getElementById('ibanner').classList.remove('show');
+});
+
+// ── SERVICE WORKER ───────────────────────────
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+
+// ── INIT ─────────────────────────────────────
+renderSvcs();
+renderRecent();
+loadLikes();
+</script>
+</body>
+</html>
