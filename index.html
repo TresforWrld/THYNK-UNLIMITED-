@@ -503,8 +503,7 @@
             <p>Your trusted partner for web development, digital marketing, AI automation, design services and many more.</p>
             <div class="contact-badge">
                 <div class="badge-item">CONTACT</div>
-                <div class="badge-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;opacity:.7"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/></svg> <strong>+260 777 083 995</strong></div>
-                <div class="badge-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:12px;height:12px;opacity:.7;vertical-align:middle"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <strong><a href="/cdn-cgi/l/email-protection#34555a5d575550514051575c745359555d581a575b59" style="color:var(--accent);text-decoration:none"><span class="__cf_email__" data-cfemail="45242b2c262421203120262d052228242c296b262a28">[email&#160;protected]</span></a></strong></div>
+                <div class="badge-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:12px;height:12px;opacity:.7;vertical-align:middle"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <strong><a href="mailto:anicadetech@gmail.com" style="color:var(--accent);text-decoration:none">anicadetech@gmail.com</a></strong></div>
             </div>
         </section>
 
@@ -578,7 +577,7 @@
             <div class="footer-info">
                 <div>Kabwe, Zambia</div>
                 <div>+260 777 083 995</div>
-                <div><a href="/cdn-cgi/l/email-protection#f3929d9a909297968796909bb3949e929a9fdd909c9e" style="color:var(--text-light);text-decoration:none">Email</a></div>
+                <div><a href="mailto:anicadetech@gmail.com" style="color:var(--text-light);text-decoration:none">anicadetech@gmail.com</a></div>
             </div>
             <div class="footer-divider"></div>
             <p style="color:rgba(148,163,184,0.5);">© 2026 ANICADE TECH</p>
@@ -854,28 +853,70 @@ _loadLikes();
       } else { window.location.reload(true); }
       return;
     }
+    var btn = document.getElementById('ov-btn');
     if(_dp){
+      btn.textContent = 'INSTALLING...';
       _dp.prompt();
       _dp.userChoice.then(function(choice){
         _dp = null;
-        hideOverlay();
+        if(choice.outcome === 'accepted'){
+          btn.textContent = 'INSTALLED!';
+          setTimeout(hideOverlay, 1500);
+        } else {
+          btn.textContent = 'INSTALL APP';
+        }
       });
     } else {
-      // _dp not fired yet — listen for it and auto-trigger immediately when ready
-      var _ovWaiting = function(e){
+      // _dp is null - diagnose why
+      var reasons = [];
+      if(!('serviceWorker' in navigator)) reasons.push('SW not supported');
+      var swState = 'unknown';
+      if('serviceWorker' in navigator && navigator.serviceWorker.controller){
+        swState = 'active';
+      } else if('serviceWorker' in navigator){
+        swState = 'no controller';
+      }
+      reasons.push('SW: ' + swState);
+      
+      // Check if already installed
+      if(window.matchMedia('(display-mode: standalone)').matches){
+        reasons.push('already installed');
+        btn.textContent = 'ALREADY INSTALLED';
+        return;
+      }
+      
+      // Most likely cause: app was recently installed/uninstalled
+      // Chrome has a cooldown of 90 days after dismissal
+      // OR the manifest/SW criteria are not met
+      // Register a one-time listener and tell user to wait
+      btn.textContent = 'WAITING...';
+      btn.style.opacity = '0.7';
+      
+      var _once = function(e){
         e.preventDefault();
         _dp = e;
-        window.removeEventListener('beforeinstallprompt', _ovWaiting);
+        window.removeEventListener('beforeinstallprompt', _once);
+        btn.textContent = 'INSTALL APP';
+        btn.style.opacity = '1';
+        // Auto-fire now
         _dp.prompt();
-        _dp.userChoice.then(function(){ _dp = null; hideOverlay(); });
-      };
-      window.addEventListener('beforeinstallprompt', _ovWaiting);
-      // Also try forcing Chrome to re-evaluate by navigating SW
-      if('serviceWorker' in navigator){
-        navigator.serviceWorker.ready.then(function(){
-          // SW is ready — Chrome should fire beforeinstallprompt soon
+        _dp.userChoice.then(function(c){
+          _dp = null;
+          if(c.outcome === 'accepted') hideOverlay();
+          else btn.textContent = 'INSTALL APP';
         });
-      }
+      };
+      window.addEventListener('beforeinstallprompt', _once);
+      
+      // If still waiting after 4s, show Chrome menu instructions as last resort
+      setTimeout(function(){
+        if(btn.textContent === 'WAITING...'){
+          btn.textContent = 'INSTALL APP';
+          btn.style.opacity = '1';
+          var body = document.getElementById('ov-body');
+          if(body) body.textContent = 'Chrome needs a moment. Try: tap menu (⋮) in Chrome → "Install app". Ensure you are using Chrome on Android.';
+        }
+      }, 4000);
     }
   };
   window.ovSkip = function(){ hideOverlay(); };
