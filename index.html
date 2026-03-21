@@ -755,9 +755,50 @@ window.addEventListener('appinstalled', () => {
 
 if ('serviceWorker' in navigator) {
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/ANICADEtech.net-in/sw.js', {scope: '/ANICADEtech.net-in/'})
-    .then(r => console.log('[SW] ready'))
-    .catch(e => console.log('[SW] error', e));
+  navigator.servi
+<script>
+let deferredPrompt = null;
+let promptShown = false;
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  console.log('[PWA] prompt ready');
+  if (!promptShown && !localStorage.getItem('pwa_dismissed')) {
+    promptShown = true;
+    setTimeout(() => {
+      document.getElementById('installPopup').style.display = 'flex';
+    }, 2000);
+  }
+});
+
+window.addEventListener('appinstalled', () => {
+  document.getElementById('installPopup').style.display = 'none';
+  deferredPrompt = null;
+});
+
+document.getElementById('installBtn').addEventListener('click', async () => {
+  document.getElementById('installPopup').style.display = 'none';
+  if (deferredPrompt) {
+    await deferredPrompt.prompt();
+    const choice = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+  }
+});
+
+document.getElementById('installDismiss').addEventListener('click', () => {
+  document.getElementById('installPopup').style.display = 'none';
+  localStorage.setItem('pwa_dismissed', '1');
+});
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/ANICADEtech.net-in/sw.js', {
+    scope: '/ANICADEtech.net-in/'
+  }).then(reg => {
+    console.log('[SW] registered scope:', reg.scope);
+  }).catch(err => {
+    console.log('[SW] failed:', err);
+  });
 }
 </script>
 </body>
