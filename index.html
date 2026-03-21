@@ -504,7 +504,7 @@
             <div class="contact-badge">
                 <div class="badge-item">CONTACT</div>
                 <div class="badge-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;opacity:.7"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/></svg> <strong>+260 777 083 995</strong></div>
-                <div class="badge-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:12px;height:12px;opacity:.7;vertical-align:middle"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <strong><a href="mailto:anicadetech@gmail.com" style="color:var(--accent);text-decoration:none">anicadetech@gmail.com</a></strong></div>
+                <div class="badge-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:12px;height:12px;opacity:.7;vertical-align:middle"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> <strong><a href="/cdn-cgi/l/email-protection#34555a5d575550514051575c745359555d581a575b59" style="color:var(--accent);text-decoration:none"><span class="__cf_email__" data-cfemail="45242b2c262421203120262d052228242c296b262a28">[email&#160;protected]</span></a></strong></div>
             </div>
         </section>
 
@@ -578,7 +578,7 @@
             <div class="footer-info">
                 <div>Kabwe, Zambia</div>
                 <div>+260 777 083 995</div>
-                <div><a href="mailto:anicadetech@gmail.com" style="color:var(--text-light);text-decoration:none">Email</a></div>
+                <div><a href="/cdn-cgi/l/email-protection#f3929d9a909297968796909bb3949e929a9fdd909c9e" style="color:var(--text-light);text-decoration:none">Email</a></div>
             </div>
             <div class="footer-divider"></div>
             <p style="color:rgba(148,163,184,0.5);">© 2026 ANICADE TECH</p>
@@ -587,7 +587,7 @@
 
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {
                 e.preventDefault();
@@ -882,7 +882,7 @@ _loadLikes();
 
   // ── INIT ──
   if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('sw.js?v=4').then(function(reg){
+    navigator.serviceWorker.register('sw.js').then(function(reg){
       reg.addEventListener('updatefound', function(){
         var sw = reg.installing;
         sw.addEventListener('statechange', function(){
@@ -905,7 +905,7 @@ _loadLikes();
         localStorage.setItem(VER_KEY, APP_VER);
       }
     } else {
-      // Show bottom sheet after 2s — gives beforeinstallprompt time to fire
+// Show bottom sheet after 2s — gives beforeinstallprompt time to fire
       setTimeout(showPopup, 2000);
       // Post-login full overlay
       if(sessionStorage.getItem('pwa_show_overlay') === '1'){
