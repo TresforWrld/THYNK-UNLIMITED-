@@ -172,16 +172,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 </head>
 <body>
 
-  <div class="splash-ring splash-ring2"></div>
-  <img class="splash-a" src="https://i.imgur.com/9mjKZAj.jpeg" alt="ANICADE">
-  <div class="splash-sub">ANICADE TECH</div>
-  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
-  <div class="splash-ver">TW.1.0.0</div>
-</div>
-
 <div class="ibanner" id="ibanner">
-  <img src="https://i.imgur.com/9mjKZAj.jpeg" style="width:32px;height:32px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1px solid rgba(0,191,255,0.25)">
-  <div class="ibt" style="flex:1;min-width:0"><strong style="font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;color:#F5F7FA;display:block;letter-spacing:.5px">ANICADE TECH</strong><span style="font-family:'Rajdhani',sans-serif;font-size:11px;color:#94A3B8">Install the app for fast access</span></div>
+  <img src="https://i.imgur.com/9mjKZAj.jpeg" style="width:30px;height:30px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1px solid rgba(0,191,255,0.2)">
+  <div style="flex:1;min-width:0;font-family:'Rajdhani',sans-serif;font-size:12px;color:#94A3B8;font-weight:500">Install for faster access</div>
   <button class="ibb" onclick="triggerInstall()">Install</button>
   <button class="ibx" onclick="dismissBanner()">&#10005;</button>
 </div>
@@ -277,7 +270,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
     <!-- ABOUT -->
     <div class="screen" id="s-about">
       <div class="screen-inner">
-        <div class="ahdr"><div class="hlogo">About</div><div class="ver-badge">TW.1.0.0</div></div>
+        <div class="ahdr"><div class="hlogo">About</div></div>
 
         <div class="abox">
           <h3>ANICADE TECH</h3>
@@ -578,19 +571,12 @@ function showToast(msg){
 // ── PWA INSTALL ──────────────────────────────
 let _dp=null;
 window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();_dp=e;
-  document.getElementById('ibanner').classList.add('show'); setBannerPad(true);
+  e.preventDefault();
+  _dp=e;
   document.getElementById('ibtn-about').disabled=false;
-  console.log('[PWA] prompt ready');
+  console.log('[PWA] install prompt ready - _dp set');
 });
-// Show banner on load regardless (may already be dismissed this session)
-window.addEventListener('load',function(){
-  if(!window.matchMedia('(display-mode: standalone)').matches){
-    if(!sessionStorage.getItem('anicade_ib_dismissed')){
-      document.getElementById('ibanner').classList.add('show'); setBannerPad(true);
-    }
-  }
-});
+
 function setBannerPad(on){
   const app = document.getElementById('app');
   if(app) app.style.paddingTop = on ? '56px' : '0';
@@ -621,11 +607,14 @@ renderSvcs();
 renderRecent();
 loadLikes();
 
+
+// Show install banner on every page load if not already installed as app
 window.addEventListener('load', function(){
   if(!window.matchMedia('(display-mode: standalone)').matches){
-    if(!sessionStorage.getItem('anicade_ib_dismissed')){
-      document.getElementById('ibanner').classList.add('show'); setBannerPad(true);
-    }
+    setTimeout(function(){
+      document.getElementById('ibanner').classList.add('show');
+      setBannerPad(true);
+    }, 800);
   }
 });
 </script>
