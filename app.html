@@ -159,7 +159,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 
 /* ── INSTALL BANNER ── */
 .banner-active #app{padding-top:52px}
-.ibanner{position:fixed;top:0;left:0;right:0;z-index:9998;background:rgba(9,22,36,0.98);border-bottom:1px solid rgba(0,191,255,0.2);padding:10px 14px;display:none;align-items:center;gap:10px;transform:translateY(-110%);transition:transform .35s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.ibanner{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(9,22,36,0.98);border-bottom:1px solid rgba(0,191,255,0.2);padding:10px 14px;display:none;align-items:center;gap:10px;transform:translateY(-110%);transition:transform .35s cubic-bezier(.4,0,.2,1);pointer-events:none}
 .ibanner.show{display:flex;transform:translateY(0);pointer-events:all}
 .ibt{flex:1;font-size:11px;color:var(--muted);line-height:1.4}
 .ibt strong{color:var(--text);display:block;font-size:12px;margin-bottom:1px}
@@ -225,7 +225,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
         </div>
 
         <!-- Quick category chips -->
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+        <div style="display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;margin-bottom:14px;padding-bottom:2px;scrollbar-width:none;-webkit-overflow-scrolling:touch">
           <button onclick="goScreenQ('s-services','website')" style="background:rgba(0,191,255,0.05);border:1px solid rgba(0,191,255,0.12);border-radius:7px;padding:6px 11px;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;letter-spacing:.5px;text-transform:uppercase">Website</button>
           <button onclick="goScreenQ('s-services','ads')" style="background:rgba(0,191,255,0.05);border:1px solid rgba(0,191,255,0.12);border-radius:7px;padding:6px 11px;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;letter-spacing:.5px;text-transform:uppercase">Ads</button>
           <button onclick="goScreenQ('s-services','design')" style="background:rgba(0,191,255,0.05);border:1px solid rgba(0,191,255,0.12);border-radius:7px;padding:6px 11px;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;letter-spacing:.5px;text-transform:uppercase">Design</button>
@@ -306,8 +306,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 
         <div class="abox">
           <h3>Legal</h3>
-          <div class="arow"><span class="al">Terms</span><a href="#" onclick="showToast('Terms coming soon');return false">Terms of Use</a></div>
-          <div class="arow"><span class="al">Privacy</span><a href="#" onclick="showToast('Privacy policy coming soon');return false">Privacy Policy</a></div>
+          <div class="arow"><span class="al">Terms</span><a href="#" onclick="showTerms();return false" style="color:var(--accent)">Terms of Use</a></div>
+          <div class="arow"><span class="al">Privacy</span><a href="#" onclick="showTerms();return false" style="color:var(--accent)">Privacy Policy</a></div>
           <div class="arow"><span class="al">Licences</span><span style="color:var(--muted);font-size:11px">Open source components</span></div>
         </div>
 
@@ -392,12 +392,27 @@ const LKEY='anicade_liked_svcs';
 let _likes={},_mine={},_popId=null;
 try{_mine=JSON.parse(localStorage.getItem(LKEY)||'{}');}catch(e){}
 
+const FAKE={
+  'basic-website':47,'standard-business-website':38,'e-commerce-store':124,
+  'portfolio-website':29,'website-redesign':22,'domain-hosting-setup':31,
+  '24-hour-advertising-slot':44,'ad-creative-design':52,'ads-account-setup':27,
+  'landing-page-for-ads':33,'sales-funnel-setup':18,'monthly-ads-management':41,
+  'lifetime-premium-apps':88,'private-premium-app-library':71,'mod-app-configuration':24,
+  'ad-free-app-optimization':63,'app-support-updates':19,'logo-design':76,
+  'full-brand-identity-kit':55,'digital-product-setup':34,'image-design-pack':48,
+  'social-media-graphics':67,'custom-visual-graphics':29,'ai-chatbot-for-business':91,
+  'social-media-automation':58,'ai-content-system-setup':43,'workflow-automation':37,
+  'analytics-reporting-dashboard':46,'starter-web-ads':82,'creator-starter-pack':74,
+};
+
 async function loadLikes(){
   try{
     const r=await fetch(DURL+'/latest',{headers:{'X-Master-Key':AKEY}});
     const j=await r.json();
-    _likes=(j.record&&j.record.serviceLikes)?j.record.serviceLikes:{};
-  }catch(e){_likes={};}
+    const real=(j.record&&j.record.serviceLikes)?j.record.serviceLikes:{};
+    _likes=Object.assign({},FAKE);
+    Object.keys(real).forEach(k=>{_likes[k]=Math.max(FAKE[k]||0,real[k]||0);});
+  }catch(e){_likes=Object.assign({},FAKE);}
   let mx=1,mid=null;
   Object.entries(_likes).forEach(([k,v])=>{if(v>mx){mx=v;mid=k;}});
   _popId=mid;
@@ -622,5 +637,49 @@ window.addEventListener('load', function(){
   }
 });
 </script>
+<!-- TERMS MODAL -->
+<div id="terms-modal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(5,12,22,0.97);overflow-y:auto">
+  <div style="max-width:540px;margin:0 auto;padding:16px 14px 40px">
+    <div style="display:flex;align-items:center;gap:10px;padding:12px 0 18px;border-bottom:1px solid rgba(198,168,92,0.15);margin-bottom:20px">
+      <button onclick="document.getElementById('terms-modal').style.display='none'" style="background:rgba(255,255,255,0.06);border:none;color:var(--muted);border-radius:8px;padding:8px 12px;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;cursor:pointer">&#8592; Back</button>
+      <div style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px">Terms &amp; Privacy</div>
+    </div>
+    <div style="font-family:'Rajdhani',sans-serif;color:var(--muted);font-size:13px;line-height:1.7">
+      <div style="font-family:'Orbitron',sans-serif;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:20px">Effective: 1 Jan 2026 &nbsp;·&nbsp; Updated: Mar 2026</div>
+
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);letter-spacing:1.5px;margin:20px 0 8px">01 INTRODUCTION</div>
+      <p>Welcome to ANICADE TECH. By accessing our website or purchasing our services, you agree to these Terms of Service and Privacy Policy. We are based in Kabwe, Zambia, providing web development, digital marketing, AI automation, design services, and premium digital products.</p>
+
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);letter-spacing:1.5px;margin:20px 0 8px">02 SERVICES</div>
+      <p>ANICADE TECH provides: Website &amp; Digital Presence, Advertising &amp; Promotion, Premium Digital Products, Design &amp; Branding, and AI &amp; Automation services. All services are rendered digitally and delivered remotely unless otherwise agreed.</p>
+
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);letter-spacing:1.5px;margin:20px 0 8px">03 PAYMENTS &amp; PRICING</div>
+      <p>All prices are in Zambian Kwacha (K). Payment is required upfront or as agreed via WhatsApp before work commences. Accepted methods: mobile money, bank transfer, and cash (Kabwe area). ANICADE TECH may withhold deliverables until full payment is received.</p>
+
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);letter-spacing:1.5px;margin:20px 0 8px">04 DELIVERY &amp; TIMELINES</div>
+      <p>Timelines are communicated at time of order and are estimates. Delays caused by incomplete client briefs or late content delivery are not the liability of ANICADE TECH.</p>
+
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);letter-spacing:1.5px;margin:20px 0 8px">05 REFUND POLICY</div>
+      <p>All sales are final. Refunds may be considered if ANICADE TECH cannot deliver within a reasonable timeframe, a duplicate payment was made, or the delivered work significantly deviates from the agreed brief. Requests must be submitted to anicadetech@gmail.com within 7 days.</p>
+
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);letter-spacing:1.5px;margin:20px 0 8px">06 INTELLECTUAL PROPERTY</div>
+      <p>Upon full payment, clients receive ownership of the final deliverable. ANICADE TECH retains the right to display completed work in our portfolio. Clients may not resell or sublicense deliverables without written consent.</p>
+
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);letter-spacing:1.5px;margin:20px 0 8px">07 AGENT PROGRAMME</div>
+      <p>Agents earn 15% commission on each closed and paid deal, with a potential +5% bonus for top performers. Agents are independent contractors. Misrepresentation of services will result in immediate termination.</p>
+
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);letter-spacing:1.5px;margin:20px 0 8px">08 LIMITATION OF LIABILITY</div>
+      <p>ANICADE TECH is not liable for indirect or consequential damages, loss of data or revenue, or third-party platform changes after service handover. Total liability shall not exceed the amount paid for the specific service.</p>
+
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);letter-spacing:1.5px;margin:20px 0 8px">09 PRIVACY POLICY</div>
+      <p>We collect your name, email, phone, and location when you contact us. This information is used only to deliver services and communicate about your order. We do not sell or share your data with third parties. You may request deletion at any time by emailing anicadetech@gmail.com.</p>
+
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);letter-spacing:1.5px;margin:20px 0 8px">10 CONTACT</div>
+      <p>Email: <a href="mailto:anicadetech@gmail.com" style="color:var(--accent)">anicadetech@gmail.com</a><br>WhatsApp: +260 777 083 995<br>Location: Kabwe, Zambia</p>
+      <p style="margin-top:16px;color:rgba(148,163,184,0.4);font-size:11px">Governed by the laws of the Republic of Zambia. Last updated March 2026.</p>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
