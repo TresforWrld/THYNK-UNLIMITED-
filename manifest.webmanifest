@@ -3,9 +3,9 @@
   "short_name": "ANICADE",
   "start_url": "/ANICADEtech.net-in/app.html",
   "scope": "/ANICADEtech.net-in/",
-  "display": "fullscreen",
-  "background_color": "#0B1C2D",
-  "theme_color": "#0B1C2D",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "orientation": "portrait",
   "icons": [
     {
