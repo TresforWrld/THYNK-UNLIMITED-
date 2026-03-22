@@ -3,11 +3,20 @@
   "short_name": "ANICADE",
   "start_url": "/ANICADEtech.net-in/app.html",
   "scope": "/ANICADEtech.net-in/",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#0B1C2D",
   "theme_color": "#0B1C2D",
+  "orientation": "portrait",
   "icons": [
-    { "src": "/ANICADEtech.net-in/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/ANICADEtech.net-in/icon-512.png", "sizes": "512x512", "type": "image/png" }
+    {
+      "src": "/ANICADEtech.net-in/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/ANICADEtech.net-in/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ]
 }
