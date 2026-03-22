@@ -277,7 +277,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
           <h3>ANICADE TECH</h3>
           <div class="arow"><span class="al">Location</span>Kabwe, Zambia</div>
           <div class="arow"><span class="al">Phone</span>+260 777 083 995</div>
-          <div class="arow"><span class="al">Email</span><a href="mailto:anicadetech@gmail.com" style="color:var(--accent);text-decoration:none">anicadetech@gmail.com</a></div>
+          <div class="arow"><span class="al">Email</span>anicadetech@gmail.com</div>
           <div class="arow"><span class="al">Founded</span>2024</div>
         </div>
 
@@ -294,7 +294,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
           <div class="arow"><span class="al">Platform</span>PWA / Android</div>
           <div class="arow"><span class="al">Offline</span>Partial cache</div>
           <div class="arow"><span class="al">Build</span>2026</div>
-          <button class="ibtn" id="ibtn-about" onclick="triggerInstall()" disabled>
+          <button class="ibtn" id="ibtn-about" onclick="triggerInstall()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             INSTALL APP ON DEVICE
           </button>
@@ -451,7 +451,10 @@ async function toggleLike(slug,ev){
     if(!rec.serviceLikes)rec.serviceLikes={};
     rec.serviceLikes[slug]=_likes[slug];
     await fetch(DURL,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':AKEY},body:JSON.stringify(rec)});
-  }catch(e){}
+  }catch(e){
+    console.warn('[Likes] sync failed:',e);
+    showToast('Like saved locally');
+  }
 }
 
 // ── RECENTLY VIEWED ──────────────────────────
@@ -567,9 +570,18 @@ function goScreen(id,tab){
     _portalLoaded=true;
     const iframe=document.getElementById('piframe');
     const pload=document.getElementById('pload');
-    iframe.src='https://tresforwrld.github.io/Agents.Code.generator/agentportal.html';
+    var portalURL='https://tresforwrld.github.io/Agents.Code.generator/agentportal.html';
+    iframe.src=portalURL;
     iframe.onload=()=>{pload.style.display='none';iframe.style.display='block';};
-    iframe.onerror=()=>{pload.innerHTML='<div style="text-align:center;padding:24px;font-size:12px;color:var(--muted)">Portal unavailable offline.</div>';};
+    iframe.onerror=()=>{
+      pload.innerHTML='<div style="text-align:center;padding:24px;font-size:12px;color:var(--muted)">Could not load portal.<br><br><a href="'+portalURL+'" target="_blank" style="color:var(--accent);font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:1px;text-decoration:none;border:1px solid rgba(0,191,255,0.3);padding:8px 16px;border-radius:20px">OPEN IN BROWSER</a></div>';
+    };
+    // Fallback if iframe never fires onload (X-Frame-Options block)
+    setTimeout(()=>{
+      if(iframe.style.display==='none'){
+        pload.innerHTML='<div style="text-align:center;padding:24px;font-size:12px;color:var(--muted)">Portal blocked by browser.<br><br><a href="'+portalURL+'" target="_blank" style="color:var(--accent);font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:1px;text-decoration:none;border:1px solid rgba(0,191,255,0.3);padding:8px 16px;border-radius:20px">OPEN PORTAL</a></div>';
+      }
+    },5000);
   }
 }
 function goScreenQ(id,q){
@@ -601,12 +613,20 @@ function setBannerPad(on){
   }
 }
 function triggerInstall(){
-  if(!_dp){showToast('Open in Chrome on Android to install');return;}
-  _dp.prompt();
-  _dp.userChoice.then(c=>{
-    if(c.outcome==='accepted'){showToast('App installed!');document.getElementById('ibanner').classList.remove('show'); setBannerPad(false);}
-    _dp=null;
-  });
+  if(_dp){
+    _dp.prompt();
+    _dp.userChoice.then(c=>{
+      if(c.outcome==='accepted'){
+        showToast('App installed!');
+        document.getElementById('ibanner').classList.remove('show');
+        setBannerPad(false);
+      }
+      _dp=null;
+    });
+  } else {
+    // Show banner anyway — at least user knows install is available
+    showToast('Use Chrome on Android → tap Install when prompted');
+  }
 }
 function dismissBanner(){
   document.getElementById('ibanner').classList.remove('show'); setBannerPad(false);
@@ -616,31 +636,33 @@ window.addEventListener('appinstalled',()=>{showToast('ANICADE TECH installed!')
 
 // ── SERVICE WORKER ───────────────────────────
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('/ANICADEtech.net-in/sw.js',{scope:'/ANICADEtech.net-in/'})
+  navigator.serviceWorker.register('./sw.js')
     .then(r=>console.log('[SW] ready',r.scope))
     .catch(e=>console.log('[SW] err',e));
 }
 
 // ── INIT ─────────────────────────────────────
-renderSvcs();
-renderRecent();
-loadLikes();
+document.addEventListener('DOMContentLoaded', function(){
+  renderSvcs();
+  renderRecent();
+  loadLikes();
+});
 
 
 // Show install banner on every page load if not already installed as app
 window.addEventListener('load', function(){
-  var standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-  if(!standalone){
-    // Only show install banner if app is NOT installed
+  var isInstalled = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  if(isInstalled){
+    // App is installed — never show install banner
+    var b = document.getElementById('ibanner');
+    if(b){ b.style.display='none'; b.classList.remove('show'); }
+    setBannerPad(false);
+  } else {
+    // Not installed — show banner after short delay
     setTimeout(function(){
       document.getElementById('ibanner').classList.add('show');
       setBannerPad(true);
-    }, 800);
-  }
-  // If standalone (already installed) - hide banner permanently
-  if(standalone){
-    var b = document.getElementById('ibanner');
-    if(b) b.style.display = 'none';
+    }, 1200);
   }
 });
 </script>
@@ -662,7 +684,7 @@ window.addEventListener('load', function(){
       <p>All prices are in Zambian Kwacha (K). Payment is required upfront via WhatsApp before work commences. Accepted methods include mobile money, bank transfer, and cash. ANICADE TECH may withhold deliverables until full payment is received.</p>
 
       <p style="font-family:'Orbitron',sans-serif;font-size:10px;color:#C6A85C;letter-spacing:1.5px;margin:18px 0 7px;padding-bottom:6px;border-bottom:1px solid rgba(198,168,92,0.1)">03 &nbsp; REFUND POLICY</p>
-      <p>All sales are final. Refunds may be considered if ANICADE TECH cannot deliver the agreed service, a duplicate payment was made, or delivered work significantly deviates from the agreed brief. Requests must be submitted within 7 days to <a href="mailto:anicadetech@gmail.com" style="color:var(--accent);text-decoration:none">anicadetech@gmail.com</a>.</p>
+      <p>All sales are final. Refunds may be considered if ANICADE TECH cannot deliver the agreed service, a duplicate payment was made, or delivered work significantly deviates from the agreed brief. Requests must be submitted within 7 days to anicadetech@gmail.com.</p>
 
       <p style="font-family:'Orbitron',sans-serif;font-size:10px;color:#C6A85C;letter-spacing:1.5px;margin:18px 0 7px;padding-bottom:6px;border-bottom:1px solid rgba(198,168,92,0.1)">04 &nbsp; INTELLECTUAL PROPERTY</p>
       <p>Upon full payment, clients receive ownership of the final deliverable. ANICADE TECH retains the right to display completed work in our portfolio. Clients may not resell or sublicense deliverables without written consent.</p>
@@ -674,8 +696,8 @@ window.addEventListener('load', function(){
       <p>ANICADE TECH is not liable for indirect damages, loss of data or revenue, or third-party platform changes after handover. Total liability shall not exceed the amount paid for the specific service.</p>
 
       <p style="font-family:'Orbitron',sans-serif;font-size:10px;color:#C6A85C;letter-spacing:1.5px;margin:18px 0 7px;padding-bottom:6px;border-bottom:1px solid rgba(198,168,92,0.1)">07 &nbsp; PRIVACY POLICY</p>
-      <p>We collect your name, email, phone, and location when you contact us. This is used only to deliver services. We do not sell or share your data. You may request deletion at any time by emailing <a href="mailto:anicadetech@gmail.com" style="color:var(--accent);text-decoration:none">anicadetech@gmail.com</a>.</p>
-      <p style="font-family:'Orbitron',sans-serif;font-size:10px;color:#C6A85C;letter-spacing:1.5px;margin:18px 0 7px;padding-bottom:6px;border-bottom:1px solid rgba(198,168,92,0.1)">08 &nbsp; CONTACT</p>
+      <p>We collect your name, email, phone, and location when you contact us. This is used only to deliver services. We do not sell or share your data. You may request deletion at any time by emailing anicadetech@gmail.com.</p>
+      <p style="font-family:'Orbitron',sans-serif;font-size:10px;color:#C6A85C;letter-spacing:1.5px;margin:18px 0 7px;padding-bottom:6px;border-bottom:1px solid rgba(198,168,92,0.1)>08 &nbsp; CONTACT</p>
       <p>Email: <a href="mailto:anicadetech@gmail.com" style="color:#00BFFF;text-decoration:none">anicadetech@gmail.com</a><br>WhatsApp: +260 777 083 995<br>Location: Kabwe, Zambia</p>
       <p style="margin-top:20px;color:#475569;font-size:11px">Governed by the laws of the Republic of Zambia. Last updated March 2026.</p>
     </div>
